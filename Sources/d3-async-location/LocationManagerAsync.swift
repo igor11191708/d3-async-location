@@ -4,11 +4,11 @@
 //
 //  Created by Igor on 03.02.2023.
 //
-
+import Foundation
 import CoreLocation
 
 
-/// Manager of locations streaming data asynchronously
+///Location manager streaming data asynchronously via property ``locations``
 @available(iOS 15.0, *)
 public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
     
@@ -27,6 +27,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
     
     private typealias StreamType = AsyncStream<CLLocation>.Continuation
     
+    /// Continuation asynchronosly passing location data
     private var stream: StreamType?{
         didSet {
             stream?.onTermination = { @Sendable _ in self.stop() }
@@ -104,10 +105,14 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
         manager.startUpdatingLocation()
     }
     
-    private func yield(location : CLLocation){
+    
+    /// Passing location data
+    /// - Parameter location: Location data
+    private func pass(location : CLLocation){
         stream?.yield(location)
     }
     
+    /// Convenience func to check status
     private func checkStatus() throws{
         if !isDetermined{
             throw LocationManagerErrors.statusIsNotDetermined
@@ -121,7 +126,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
     ///   - manager: Location manager
     ///   - locations: Array of locations
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            locations.forEach{ yield(location: $0) }
+            locations.forEach{ pass(location: $0) }
     }
     
     /// Determine status after the request permission

@@ -8,7 +8,6 @@
 import SwiftUI
 import CoreLocation
 
-
 /// Viewmodel posting locations
 @available(iOS 15.0, *)
 public final class LMViewModel: ILocationManagerViewModel{
