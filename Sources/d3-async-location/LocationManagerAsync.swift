@@ -10,8 +10,8 @@ import CoreLocation
 
 ///Location manager streaming data asynchronously via property ``locations``
 @available(iOS 15.0, *)
-public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
-    
+public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
+       
     private var locations : AsyncStream<CLLocation>{
         AsyncStream(CLLocation.self) { continuation in
                 streaming(with: continuation)
@@ -63,7 +63,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
     // MARK: - API
     
     /// Check status and get stream of async data
-    public var start : AsyncStream<CLLocation>?{
+    public var start : AsyncStream<CLLocation>{
         get async throws {
             if await getStatus{
                 return locations
@@ -72,7 +72,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
         }
     }
     
-    /// Stop updating
+    /// Stop streaming
     public func stop(){
         stream = nil
         manager.stopUpdatingLocation()

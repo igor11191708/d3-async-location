@@ -21,7 +21,6 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     /// Async locations manager
     private let manager : LocationManagerAsync
-
         
     // MARK: - Life circle
     
@@ -40,11 +39,9 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     /// Start streaming locations
     public func start() async throws{
-        if let stream = try await manager.start{
-                for await coordinate in stream{
-                    await update(coordinate: coordinate)
-                }
-            }
+        for await coordinate in try await manager.start{
+            await update(coordinate: coordinate)
+        }
     }
     
     /// Start streaming locations
