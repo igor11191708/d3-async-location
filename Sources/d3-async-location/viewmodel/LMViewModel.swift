@@ -31,7 +31,7 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     deinit{
         #if DEBUG
-        print("deinit LocationManagerViewModel")
+        print("deinit LMViewModel")
         #endif
     }
     
