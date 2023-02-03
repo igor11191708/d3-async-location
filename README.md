@@ -9,7 +9,7 @@
 ## How to use
  
 ### 1. Add to info the option "Privacy - Location When In Use Usage Description" 
- ![Stories life circle](https://github.com/The-Igor/d3-location/blob/main/img/image2.png)
+ ![Stories life circle](https://github.com/The-Igor/d3-async-location/blob/main/img/image2.png)
  
 ### 2. Add or inject LMViewModel into a View
 
@@ -66,11 +66,11 @@ public protocol ILocationManagerViewModel: ObservableObject{
 ```
 
 ## SwiftUI example of using package
-[d3-stories-instagram-example](https://github.com/The-Igor/async-location-swift-example)
+[async-location-swift-example](https://github.com/The-Igor/async-location-swift-example)
 
 if you are using the simulator don't forget to simulate locations
 
- ![Stories life circle](https://github.com/The-Igor/d3-location/blob/main/img/image3.gif)
+ ![Stories life circle](https://github.com/The-Igor/d3-async-location/blob/main/img/image3.gif)
 
 ## Documentation(API)
 - You need to have Xcode 13 installed in order to have access to Documentation Compiler (DocC)
