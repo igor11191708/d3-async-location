@@ -21,25 +21,8 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     /// Async locations manager
     private let manager : LocationManagerAsync
-    
-    /// Check status and get stream of async data
-    private var getStream : AsyncStream<CLLocation>?{
-        get async throws {
-            if await getStatus{
-                return try manager.locations
-            }
-            throw LocationManagerErrors.accessIsNotAuthorized
-        }
-    }
-    
-    /// Get status
-    private var getStatus: Bool{
-        get async{
-            let isAuthorized = await manager.requestPermission()
-            return check(status: isAuthorized)
-        }
-    }
-    
+
+        
     // MARK: - Life circle
     
     public init(accuracy : CLLocationAccuracy? = nil){
@@ -57,7 +40,7 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     /// Start streaming locations
     public func start() async throws{
-            if let stream = try await getStream{
+        if let stream = try await manager.start{
                 for await coordinate in stream{
                     await update(coordinate: coordinate)
                 }
@@ -75,10 +58,6 @@ public final class LMViewModel: ILocationManagerViewModel{
     @MainActor
     private func update(coordinate : CLLocation) {
         locations.append(coordinate)
-    }
-    
-    private func check(status : CLAuthorizationStatus) -> Bool{
-        [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
     }
 
 }

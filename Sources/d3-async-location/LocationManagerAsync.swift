@@ -18,7 +18,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
         get throws {
             try checkStatus()
             return AsyncStream(CLLocation.self) { continuation in
-                start(with: continuation)
+                streaming(with: continuation)
             }
         }
     }
@@ -67,7 +67,33 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
         
     }
     
-    // MARK: - API
+    // MARK: - API    
+    
+    /// Check status and get stream of async data
+    public var start : AsyncStream<CLLocation>?{
+        get async throws {
+            if await getStatus{
+                return try locations
+            }
+            throw LocationManagerErrors.accessIsNotAuthorized
+        }
+    }
+    
+    /// Stop updating
+    public func stop(){
+        stream = nil
+        manager.stopUpdatingLocation()
+    }
+    
+    // MARK: - Private
+    
+    /// Get status
+    private var getStatus: Bool{
+        get async{
+            let isAuthorized = await requestPermission()
+            return check(status: isAuthorized)
+        }
+    }
     
     /// Request permission
     /// Don't forget to add in Info "Privacy - Location When In Use Usage Description" something like "Show list of locations"
@@ -84,14 +110,6 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
         
     }
     
-    /// Stop updating
-    public func stop(){
-        stream = nil
-        manager.stopUpdatingLocation()
-    }
-    
-    // MARK: - Private
-    
     /// Set manager's properties
     /// - Parameter accuracy: Desired accuracy
     private func updateSettings(accuracy : CLLocationAccuracy?){
@@ -100,7 +118,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
     }
     
     /// Start updating
-    private func start(with continuation : StreamType){
+    private func streaming(with continuation : StreamType){
         stream = continuation
         manager.startUpdatingLocation()
     }
@@ -117,6 +135,10 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
         if !isDetermined{
             throw LocationManagerErrors.statusIsNotDetermined
         }
+    }
+    
+    private func check(status : CLAuthorizationStatus) -> Bool{
+        [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
     }
     
     // MARK: - Delegate
