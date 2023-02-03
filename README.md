@@ -18,7 +18,7 @@
     @EnvironmentObject var model: LMViewModel
 ```
 
-### 3. call ViewModel method start() within async environment of the View
+### 3. Call ViewModel method start() within async environment of the View
 
 ```
              Task{
