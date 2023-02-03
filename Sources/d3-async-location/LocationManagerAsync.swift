@@ -8,7 +8,7 @@ import Foundation
 import CoreLocation
 
 
-///Location manager streaming data asynchronously via property ``locations``
+///Location manager streaming data asynchronously via instance of ``AsyncStream`` returning from ``start``
 @available(iOS 15.0, *)
 public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
        
@@ -20,14 +20,14 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
     
     private typealias StreamType = AsyncStream<CLLocation>.Continuation
     
-    /// Continuation asynchronosly passing location data
+    /// Continuation asynchronously passing location data
     private var stream: StreamType?{
         didSet {
             stream?.onTermination = { @Sendable _ in self.stop() }
         }
     }
     
-    /// Continuation to get permission is status is not defined
+    /// Continuation to get permission if status is not defined
     private var permission : CheckedContinuation<CLAuthorizationStatus,Never>?
     
     /// Location manager
@@ -83,8 +83,8 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
     /// Get status
     private var getStatus: Bool{
         get async{
-            let isAuthorized = await requestPermission()
-            return check(status: isAuthorized)
+            let status = await requestPermission()
+            return isAuthorized(status)
         }
     }
     
@@ -122,10 +122,10 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
         stream?.yield(location)
     }
     
-    /// check permision status
+    /// check permission status
     /// - Parameter status: Status for checking
     /// - Returns: Return `True` if is allowed
-    private func check(status : CLAuthorizationStatus) -> Bool{
+    private func isAuthorized(_ status : CLAuthorizationStatus) -> Bool{
         [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
     }
     
@@ -144,6 +144,5 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
             status = manager.authorizationStatus
             permission?.resume(returning: status)
-    }
-    
+    }    
 }
