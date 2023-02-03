@@ -54,7 +54,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
         
         self.init()
         
-        managerSettings(accuracy: accuracy)
+        updateSettings(accuracy: accuracy)
     }
 
     override init(){
@@ -94,7 +94,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
     
     /// Set manager's properties
     /// - Parameter accuracy: Desired accuracy
-    private func managerSettings(accuracy : CLLocationAccuracy?){
+    private func updateSettings(accuracy : CLLocationAccuracy?){
         manager.delegate = self
         manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
     }
