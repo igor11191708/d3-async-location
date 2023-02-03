@@ -41,11 +41,7 @@
 ```
 
 ### 5. Showcase possible errors from LMViewModel in UI is up to you
-```
-    ///Status is not determined If you are trying to get Async stream without
-     permission request in case you implement your own ViewModel and access LocationManagerAsync.locations
-    case statusIsNotDetermined
-    
+```   
     ///Access was denied by  user
     case accessIsNotAuthorized
 ```
