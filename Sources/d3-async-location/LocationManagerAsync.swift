@@ -12,18 +12,11 @@ import CoreLocation
 @available(iOS 15.0, *)
 public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
     
-    // MARK: - Public properties
-    
-    public var locations : AsyncStream<CLLocation>{
-        get throws {
-            try checkStatus()
-            return AsyncStream(CLLocation.self) { continuation in
+    private var locations : AsyncStream<CLLocation>{
+        AsyncStream(CLLocation.self) { continuation in
                 streaming(with: continuation)
             }
-        }
     }
-    
-    // MARK: - Private properties
     
     private typealias StreamType = AsyncStream<CLLocation>.Continuation
     
@@ -67,13 +60,13 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
         
     }
     
-    // MARK: - API    
+    // MARK: - API
     
     /// Check status and get stream of async data
     public var start : AsyncStream<CLLocation>?{
         get async throws {
             if await getStatus{
-                return try locations
+                return locations
             }
             throw LocationManagerErrors.accessIsNotAuthorized
         }
@@ -98,7 +91,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
     /// Request permission
     /// Don't forget to add in Info "Privacy - Location When In Use Usage Description" something like "Show list of locations"
     /// - Returns: Permission status
-    public func requestPermission() async -> CLAuthorizationStatus{
+    private func requestPermission() async -> CLAuthorizationStatus{
         manager.requestWhenInUseAuthorization()
         
         if isDetermined{ return status }
@@ -123,20 +116,15 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate{
         manager.startUpdatingLocation()
     }
     
-    
     /// Passing location data
     /// - Parameter location: Location data
     private func pass(location : CLLocation){
         stream?.yield(location)
     }
     
-    /// Convenience func to check status
-    private func checkStatus() throws{
-        if !isDetermined{
-            throw LocationManagerErrors.statusIsNotDetermined
-        }
-    }
-    
+    /// check permision status
+    /// - Parameter status: Status for checking
+    /// - Returns: Return `True` if is allowed
     private func check(status : CLAuthorizationStatus) -> Bool{
         [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
     }
