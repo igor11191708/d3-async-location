@@ -23,7 +23,7 @@
 ```
              Task{
                  do{
-                     try await model.start()
+                     try await viewModel.start()
                  }catch{
                      self.error = error.localizedDescription
                  }
