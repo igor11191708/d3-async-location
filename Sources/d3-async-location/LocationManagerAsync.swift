@@ -13,7 +13,7 @@ import CoreLocation
 public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
        
     private var locations : AsyncStream<CLLocation>{
-        AsyncStream(CLLocation.self) { continuation in
+        .init(CLLocation.self) { continuation in
                 streaming(with: continuation)
             }
     }
