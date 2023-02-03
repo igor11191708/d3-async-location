@@ -96,7 +96,7 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
         
         if isDetermined{ return status }
         
-        //Suspension point until we get the response from the user according the permission
+        /// Suspension point until we get permission from the user
         return await withCheckedContinuation{ continuation in
             permission = continuation
         }
@@ -144,5 +144,5 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
             status = manager.authorizationStatus
             permission?.resume(returning: status)
-    }    
+    }
 }
