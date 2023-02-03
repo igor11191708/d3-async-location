@@ -30,7 +30,7 @@
              }
 ```
 
-### 4. Process async stream of locations from "locations" property of the ViewModel
+### 4. Process async stream from "locations" property of the ViewModel
 ```
     @ViewBuilder
     var coordinatesTpl: some View{
