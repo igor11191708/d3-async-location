@@ -43,11 +43,12 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
     
     // MARK: - Life circle
     
-    public convenience init(accuracy : CLLocationAccuracy?){
+    public convenience init(_ accuracy : CLLocationAccuracy?,
+                            _ backgroundUpdates : Bool = false){
         
         self.init()
         
-        updateSettings(accuracy: accuracy)
+        updateSettings(accuracy, backgroundUpdates)
     }
 
     override init(){
@@ -105,9 +106,11 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
     
     /// Set manager's properties
     /// - Parameter accuracy: Desired accuracy
-    private func updateSettings(accuracy : CLLocationAccuracy?){
+    private func updateSettings(_ accuracy : CLLocationAccuracy?,
+                                _ backgroundUpdates : Bool = false){
         manager.delegate = self
         manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
+        manager.allowsBackgroundLocationUpdates = backgroundUpdates
     }
     
     /// Start updating

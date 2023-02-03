@@ -24,8 +24,8 @@ public final class LMViewModel: ILocationManagerViewModel{
         
     // MARK: - Life circle
     
-    public init(accuracy : CLLocationAccuracy? = nil){
-        manager = LocationManagerAsync(accuracy: accuracy)
+    public init(accuracy : CLLocationAccuracy? = nil, backgroundUpdates : Bool = false){
+        manager = LocationManagerAsync(accuracy, backgroundUpdates)
         
     }
     
