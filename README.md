@@ -40,7 +40,7 @@
     }
 ```
 
-### 5. Showcase possible errors from LMViewModel in UI is up to you
+### 5. Showcase error
 ```   
     ///Access was denied by  user
     case accessIsNotAuthorized
