@@ -86,6 +86,9 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     public func stop(){
         stream = nil
         manager.stopUpdatingLocation()
+        #if DEBUG
+        print("stop updating")
+        #endif
     }
     
     // MARK: - Private
