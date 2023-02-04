@@ -44,12 +44,18 @@ I would recomend to use .task modifire it manages cancelation if you desided to 
 
 ### 5. Showcase error
 ```   
-    ///Access was denied
+    ///Access was denied by  user
     case accessIsNotAuthorized
     
-    /// Attempt to launch streaming again while it's been already started
+    /// Attempt to launch streaming while it's been already started
     /// Subscribe different Views to LMViewModel.locations publisher to feed them
     case streamingProcessHasAlreadyStarted
+    
+    /// Stream was cancelled
+    case streamCancelled
+    
+    /// Unknown termination
+    case unknownTermination
 ```
 
 ## ViewModel API
