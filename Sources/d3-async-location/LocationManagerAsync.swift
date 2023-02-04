@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-///Location manager streaming data asynchronously via instance of ``AsyncStream`` returning from ``start``
+///Location manager streaming data asynchronously via instance of ``AsyncStream`` returning from ``start`` asking permission in advance if it's not determined.
 @available(iOS 15.0, watchOS 7.0, *)
 public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, ILocationManagerAsync{
            

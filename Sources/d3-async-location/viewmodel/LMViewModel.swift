@@ -9,6 +9,8 @@ import SwiftUI
 import CoreLocation
 
 /// Viewmodel posting locations
+/// Add or inject LMViewModel into a View ```@EnvironmentObject var model: LMViewModel```
+/// Call method start() within async environment to start async stream of locations
 @available(iOS 15.0, watchOS 7.0, *)
 public final class LMViewModel: ILocationManagerViewModel{
     
