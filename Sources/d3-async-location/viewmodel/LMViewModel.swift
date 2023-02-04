@@ -65,7 +65,7 @@ public final class LMViewModel: ILocationManagerViewModel{
             }
         }catch{
             
-            state = .idle // if access was not granted just set state as idle, manager did not get start in this case
+            state = .idle // if access was not granted just set state to idle, manager did not get started in this case
             
             if isStreamCancelled(with: error){ stop() }
             
