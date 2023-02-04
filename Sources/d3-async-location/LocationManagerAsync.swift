@@ -8,8 +8,8 @@
 import CoreLocation
 
 ///Location manager streaming data asynchronously via instance of ``AsyncStream`` returning from ``start``
-@available(iOS 15.0, *)
-public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
+@available(iOS 15.0, watchOS 7.0, *)
+public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, ILocationManagerAsync{
            
     private typealias StreamType = AsyncStream<CLLocation>.Continuation
     

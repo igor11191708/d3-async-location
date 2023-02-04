@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-protocol ILocationManagerAsync: CLLocationManagerDelegate{
+protocol ILocationManagerAsync{
     
     /// Check status and get stream of async data
     var start : AsyncStream<CLLocation> { get async throws }

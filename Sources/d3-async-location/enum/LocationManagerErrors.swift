@@ -8,7 +8,7 @@
 import Foundation
 
 /// Async locations manager errors
-@available(iOS 15.0, *)
+@available(iOS 15.0, watchOS 7.0, *)
 public enum LocationManagerErrors: Error{    
    
     ///Access was denied by  user
