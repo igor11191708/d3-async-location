@@ -45,6 +45,9 @@
 ```   
     ///Access was denied
     case accessIsNotAuthorized
+    
+    /// Attempt to launch streaming again while it's been already started
+    case streamHasAlreadyStarted
 ```
 
 ## ViewModel API
