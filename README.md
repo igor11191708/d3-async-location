@@ -20,7 +20,7 @@
 ```
 
 ### 3. Call ViewModel method start() within async environment
-If task will be canceled the streamimg stops automaticaly
+If task will be canceled the streaming stops automatically
 
 ```
  Task{
@@ -75,7 +75,7 @@ if you are using the simulator don't forget to simulate locations
 
  ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image3.gif)
  
- Avalable on watchOs
+ Available on watchOs
  
  ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image5.gif)
  
