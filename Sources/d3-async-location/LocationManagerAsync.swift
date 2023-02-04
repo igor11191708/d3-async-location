@@ -30,7 +30,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     }
     
     /// Continuation to get permission if status is not defined
-    private var permission : CheckedContinuation<CLAuthorizationStatus,Never>?
+    private var permissionAwait : CheckedContinuation<CLAuthorizationStatus,Never>?
     
     /// Location manager
     private let manager : CLLocationManager
@@ -104,7 +104,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         
         /// Suspension point until we get permission from the user
         return await withCheckedContinuation{ continuation in
-            permission = continuation
+            permissionAwait = continuation
         }
         
     }
@@ -151,6 +151,6 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// - Parameter manager: Location manager
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
             status = manager.authorizationStatus
-            permission?.resume(returning: status)
+            permissionAwait?.resume(returning: status)
     }
 }
