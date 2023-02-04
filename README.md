@@ -42,7 +42,7 @@
 
 ### 5. Showcase error
 ```   
-    ///Access was denied by  user
+    ///Access was denied
     case accessIsNotAuthorized
 ```
 
