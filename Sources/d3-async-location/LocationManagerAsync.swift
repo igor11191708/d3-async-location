@@ -78,7 +78,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
             if await getPermission{
                 return locations
             }
-            throw LocationManagerErrors.accessIsNotAuthorized
+            throw AsyncLocationErrors.accessIsNotAuthorized
         }
     }
     

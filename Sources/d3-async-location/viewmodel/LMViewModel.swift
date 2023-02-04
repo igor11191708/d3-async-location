@@ -54,7 +54,7 @@ public actor LMViewModel: ILocationManagerViewModel{
     public func start() async throws{
         
         guard isIdle else{
-            throw LocationManagerErrors.streamingProcessHasAlreadyStarted
+            throw AsyncLocationErrors.streamingProcessHasAlreadyStarted
         }
         
         state = .streaming
@@ -67,13 +67,12 @@ public actor LMViewModel: ILocationManagerViewModel{
             state = .idle
             throw error
         }
-        
     }
     
     /// Start streaming locations
     public func stop(){
-        state = .idle
         manager.stop()
+        state = .idle
     }
     
     // MARK: - Private

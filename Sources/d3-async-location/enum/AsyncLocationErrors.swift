@@ -9,7 +9,7 @@ import Foundation
 
 /// Async locations manager errors
 @available(iOS 15.0, watchOS 7.0, *)
-public enum LocationManagerErrors: Error{
+public enum AsyncLocationErrors: Error{
    
     ///Access was denied by  user
     case accessIsNotAuthorized
