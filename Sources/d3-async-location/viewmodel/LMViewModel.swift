@@ -65,7 +65,7 @@ public final class LMViewModel: ILocationManagerViewModel{
             }
         }catch{
             
-            state = .idle
+            state = .idle // if access was not granted just set state as idle, manager did not get start in this case
             
             if isStreamCancelled(with: error){ stop() }
             
@@ -86,6 +86,10 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     // MARK: - Private
     
+    
+    /// Check if it is cancelation error
+    /// - Parameter error: Error from manager
+    /// - Returns: true is stream was canceled
     func isStreamCancelled(with error : Error) -> Bool{
         
         if let e = error as? AsyncLocationErrors{
@@ -94,7 +98,9 @@ public final class LMViewModel: ILocationManagerViewModel{
         
         return false
     }
-    
+        
+    /// Add new location
+    /// - Parameter coordinate: data
     @MainActor
     private func add(_ coordinate : CLLocation) {
         locations.append(coordinate)
