@@ -69,7 +69,7 @@ public actor LMViewModel: ILocationManagerViewModel{
         }
     }
     
-    /// Start streaming locations
+    /// Stop streaming locations
     public func stop(){
         manager.stop()
         state = .idle
