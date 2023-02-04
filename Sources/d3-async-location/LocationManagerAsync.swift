@@ -159,13 +159,11 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// Process termination
     /// - Parameter termination: A type that indicates how the stream terminated.
     private func onTermination(_ termination: Termination){
+        let type = AsyncLocationErrors.self
          switch termination {
-             case .finished:
-             stop()
-             case .cancelled:
-             stream?.finish(throwing: AsyncLocationErrors.streamCancelled)
-         @unknown default:
-             stream?.finish(throwing: AsyncLocationErrors.unknownTermination)
+              case .finished: stop()
+             case .cancelled: stream?.finish(throwing: type.streamCancelled)
+            @unknown default: stream?.finish(throwing: type.unknownTermination)
          }
      }
     
