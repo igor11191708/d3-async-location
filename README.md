@@ -4,7 +4,6 @@
  ## Features
 - [x] Using new concurrency swift model around CoreLocation manager
 - [x] Customizable in terms of CLLocationManager properties
-- [x] Data isolation by Actor let you escape race condition
 - [x] Streaming current locations asynchronously
 - [x] Support for iOS and watchOS
 - [x] Errors handling
