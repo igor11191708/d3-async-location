@@ -24,9 +24,11 @@ public final class LMViewModel: ILocationManagerViewModel{
         
     // MARK: - Life circle
     
+    /// - Parameters:
+    ///   - accuracy: The accuracy of a geographical coordinate.
+    ///   - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
     public init(accuracy : CLLocationAccuracy? = nil, backgroundUpdates : Bool = false){
         manager = LocationManagerAsync(accuracy, backgroundUpdates)
-        
     }
     
     deinit{
@@ -40,7 +42,7 @@ public final class LMViewModel: ILocationManagerViewModel{
     /// Start streaming locations
     public func start() async throws{
         for await coordinate in try await manager.start{
-            await update(coordinate: coordinate)
+            await add(coordinate)
         }
     }
     
@@ -53,7 +55,7 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     
     @MainActor
-    private func update(coordinate : CLLocation) {
+    private func add(_ coordinate : CLLocation) {
         locations.append(coordinate)
     }
 

@@ -10,15 +10,18 @@ import CoreLocation
 ///Location manager streaming data asynchronously via instance of ``AsyncStream`` returning from ``start``
 @available(iOS 15.0, *)
 public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
-       
+           
+    private typealias StreamType = AsyncStream<CLLocation>.Continuation
+    
+    // MARK: - Private properties
+    
+    /// Async stream of locations
     private var locations : AsyncStream<CLLocation>{
         .init(CLLocation.self) { continuation in
                 streaming(with: continuation)
             }
     }
-    
-    private typealias StreamType = AsyncStream<CLLocation>.Continuation
-    
+   
     /// Continuation asynchronously passing location data
     private var stream: StreamType?{
         didSet {
@@ -42,6 +45,9 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
     
     // MARK: - Life circle
     
+    /// - Parameters:
+    ///   - accuracy: The accuracy of a geographical coordinate.
+    ///   - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
     public convenience init(_ accuracy : CLLocationAccuracy?,
                             _ backgroundUpdates : Bool = false){
         
@@ -65,7 +71,7 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
     /// Check status and get stream of async data
     public var start : AsyncStream<CLLocation>{
         get async throws {
-            if await getStatus{
+            if await getPermission{
                 return locations
             }
             throw LocationManagerErrors.accessIsNotAuthorized
@@ -80,8 +86,8 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
     
     // MARK: - Private
     
-    /// Get status
-    private var getStatus: Bool{
+    /// Get status asynchronously and check is it authorized to start getting the stream of locations
+    private var getPermission: Bool{
         get async{
             let status = await requestPermission()
             return isAuthorized(status)
@@ -124,7 +130,7 @@ public final class LocationManagerAsync: NSObject, ILocationManagerAsync{
         stream?.yield(location)
     }
     
-    /// check permission status
+    /// Check permission status
     /// - Parameter status: Status for checking
     /// - Returns: Return `True` if is allowed
     private func isAuthorized(_ status : CLAuthorizationStatus) -> Bool{
