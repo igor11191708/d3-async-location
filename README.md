@@ -21,9 +21,9 @@
 
 ### 3. Call ViewModel method start() within async environment
 If task will be canceled the streaming stops automatically
-
+I would recomend to use .task modifire it manages cancelation if you desided to use Task and keep it in @State don't forget to cancel() when the time has come
 ```
- Task{
+ .task{
        do{
              try await viewModel.start()
          }catch{

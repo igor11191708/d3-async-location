@@ -13,7 +13,7 @@ import CoreLocation
 /// Add or inject LMViewModel into a View ```@EnvironmentObject var model: LMViewModel```
 /// Call method start() within async environment to start async stream of locations
 @available(iOS 15.0, watchOS 7.0, *)
-public actor LMViewModel: ILocationManagerViewModel{
+public final class LMViewModel: ILocationManagerViewModel{
     
     // MARK: - Public
     
@@ -60,22 +60,40 @@ public actor LMViewModel: ILocationManagerViewModel{
         state = .streaming
         
         do {
-            for await coordinate in try await manager.start{
+            for try await coordinate in try await manager.start{
                 await add(coordinate)
             }
         }catch{
+            
             state = .idle
+            
+            if isStreamCancelled(with: error){ stop() }
+            
             throw error
         }
     }
     
     /// Stop streaming locations
     public func stop(){
-        manager.stop()
-        state = .idle
+  
+            manager.stop()
+            state = .idle
+
+            #if DEBUG
+            print("stop viewmodel")
+            #endif
     }
     
     // MARK: - Private
+    
+    func isStreamCancelled(with error : Error) -> Bool{
+        
+        if let e = error as? AsyncLocationErrors{
+            return [AsyncLocationErrors.streamCancelled, .unknownTermination].contains(e)
+        }
+        
+        return false
+    }
     
     @MainActor
     private func add(_ coordinate : CLLocation) {

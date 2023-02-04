@@ -17,4 +17,10 @@ public enum AsyncLocationErrors: Error{
     /// Attempt to launch streaming while it's been already started
     /// Subscribe different Views to LMViewModel.locations publisher to feed them
     case streamingProcessHasAlreadyStarted
+    
+    /// Stream was cancelled
+    case streamCancelled
+    
+    /// Unknown termination
+    case unknownTermination
 }

@@ -11,7 +11,7 @@ import CoreLocation
 protocol ILocationManagerAsync{
     
     /// Check status and get stream of async data
-    var start : AsyncStream<CLLocation> { get async throws }
+    var start : AsyncThrowingStream<CLLocation, Error> { get async throws }
     
     /// Stop streaming
     func stop()

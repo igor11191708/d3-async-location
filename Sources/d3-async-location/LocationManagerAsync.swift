@@ -7,11 +7,14 @@
 
 import CoreLocation
 
+fileprivate typealias Termination = AsyncThrowingStream<CLLocation, Error>.Continuation.Termination
+
 ///Location manager streaming data asynchronously via instance of ``AsyncStream`` returning from ``start`` asking permission in advance if it's not determined.
 @available(iOS 15.0, watchOS 7.0, *)
 public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, ILocationManagerAsync{
+   
            
-    private typealias StreamType = AsyncStream<CLLocation>.Continuation
+    private typealias StreamType = AsyncThrowingStream<CLLocation, Error>.Continuation
     
     // MARK: - Private properties
    
@@ -21,7 +24,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     // Streaming locations
     
     /// Async stream of locations
-    private var locations : AsyncStream<CLLocation>{
+    private var locations : AsyncThrowingStream<CLLocation, Error>{
         .init(CLLocation.self) { continuation in
                 streaming(with: continuation)
             }
@@ -30,7 +33,10 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// Continuation asynchronously passing location data
     private var stream: StreamType?{
         didSet {
-            stream?.onTermination = { @Sendable _ in self.stop() }
+            stream?.onTermination = { @Sendable termination in
+                self.onTermination(termination)
+                
+            }
         }
     }
     
@@ -73,9 +79,12 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     // MARK: - API
     
     /// Check status and get stream of async data Throw an error ``LocationManagerErrors`` if permission is not granted
-    public var start : AsyncStream<CLLocation>{
+    public var start : AsyncThrowingStream<CLLocation, Error>{
         get async throws {
             if await getPermission{
+                #if DEBUG
+                print("start")
+                #endif
                 return locations
             }
             throw AsyncLocationErrors.accessIsNotAuthorized
@@ -84,8 +93,10 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     /// Stop streaming
     public func stop(){
+        
         stream = nil
         manager.stopUpdatingLocation()
+        
         #if DEBUG
         print("stop updating")
         #endif
@@ -148,6 +159,19 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
         manager.allowsBackgroundLocationUpdates = backgroundUpdates
     }
+    
+    /// Precess termination
+    /// - Parameter termination: A type that indicates how the stream terminated.
+    private func onTermination(_ termination: Termination){
+         switch termination {
+             case .finished:
+             stop()
+             case .cancelled:
+             stream?.finish(throwing: AsyncLocationErrors.streamCancelled)
+         @unknown default:
+             stream?.finish(throwing: AsyncLocationErrors.unknownTermination)
+         }
+     }
     
     // MARK: - Delegate
     
