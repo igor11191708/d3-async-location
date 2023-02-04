@@ -47,7 +47,8 @@
     case accessIsNotAuthorized
     
     /// Attempt to launch streaming again while it's been already started
-    case streamHasAlreadyStarted
+    /// Subscribe different Views to LMViewModel.locations publisher to feed them
+    case streamingProcessHasAlreadyStarted
 ```
 
 ## ViewModel API

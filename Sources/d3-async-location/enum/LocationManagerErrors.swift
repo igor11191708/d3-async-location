@@ -15,5 +15,6 @@ public enum LocationManagerErrors: Error{
     case accessIsNotAuthorized
     
     /// Attempt to launch streaming while it's been already started
-    case streamHasAlreadyStarted
+    /// Subscribe different Views to LMViewModel.locations publisher to feed them
+    case streamingProcessHasAlreadyStarted
 }

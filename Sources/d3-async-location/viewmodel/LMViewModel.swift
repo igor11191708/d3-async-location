@@ -52,14 +52,22 @@ public actor LMViewModel: ILocationManagerViewModel{
     
     /// Start streaming locations
     public func start() async throws{
-        if isIdle{
-            state = .streaming
+        
+        guard isIdle else{
+            throw LocationManagerErrors.streamingProcessHasAlreadyStarted
+        }
+        
+        state = .streaming
+        
+        do {
             for await coordinate in try await manager.start{
                 await add(coordinate)
             }
-        }else{
-            throw LocationManagerErrors.streamHasAlreadyStarted
+        }catch{
+            state = .idle
+            throw error
         }
+        
     }
     
     /// Start streaming locations

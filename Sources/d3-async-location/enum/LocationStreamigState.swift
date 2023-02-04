@@ -11,7 +11,7 @@ import Foundation
 @available(iOS 15.0, watchOS 7.0, *)
 enum LocationStreamingState{
     
-    case idle
-    
+    case idle    
+   
     case streaming
 }
