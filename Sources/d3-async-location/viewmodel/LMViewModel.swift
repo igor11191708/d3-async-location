@@ -53,7 +53,6 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     // MARK: - Private
     
-    
     @MainActor
     private func add(_ coordinate : CLLocation) {
         locations.append(coordinate)
