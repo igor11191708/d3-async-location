@@ -72,7 +72,7 @@ if you are using the simulator don't forget to simulate locations
  
  Avalable on watchOs
  
- ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image1.gif)
+ ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image5.gif)
  
 ## Documentation(API)
 - You need to have Xcode 13 installed in order to have access to Documentation Compiler (DocC)
