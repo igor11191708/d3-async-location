@@ -20,15 +20,16 @@
 ```
 
 ### 3. Call ViewModel method start() within async environment
+If task will be canceled the streamimg stops automaticaly
 
 ```
-             Task{
-                 do{
-                     try await viewModel.start()
-                 }catch{
-                     self.error = error.localizedDescription
-                 }
-             }
+ Task{
+       do{
+             try await viewModel.start()
+         }catch{
+             self.error = error.localizedDescription
+         }     
+    }
 ```
 
 ### 4. Bake async stream of data from "locations" into a visual presentation 
