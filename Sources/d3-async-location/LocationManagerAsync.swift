@@ -7,14 +7,10 @@
 
 import CoreLocation
 
-fileprivate typealias Termination = AsyncThrowingStream<CLLocation, Error>.Continuation.Termination
-
 ///Location manager streaming data asynchronously via instance of ``AsyncStream`` returning from ``start`` asking permission in advance if it's not determined.
 @available(iOS 15.0, watchOS 7.0, *)
 public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, ILocationManagerAsync{
-   
-           
-    private typealias StreamType = AsyncThrowingStream<CLLocation, Error>.Continuation
+               
     
     // MARK: - Private properties
    
@@ -190,3 +186,8 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
             permissionAwait?.resume(returning: status)
     }
 }
+
+
+fileprivate typealias Termination = AsyncThrowingStream<CLLocation, Error>.Continuation.Termination
+
+fileprivate typealias StreamType = AsyncThrowingStream<CLLocation, Error>.Continuation
