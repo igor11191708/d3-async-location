@@ -14,6 +14,11 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     private typealias StreamType = AsyncStream<CLLocation>.Continuation
     
     // MARK: - Private properties
+   
+    /// Location manager
+    private let manager : CLLocationManager
+    
+    // Streaming locations
     
     /// Async stream of locations
     private var locations : AsyncStream<CLLocation>{
@@ -29,12 +34,11 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         }
     }
     
+    // Authorization
+    
     /// Continuation to get permission if status is not defined
     private var permissionAwait : CheckedContinuation<CLAuthorizationStatus,Never>?
-    
-    /// Location manager
-    private let manager : CLLocationManager
-        
+       
     /// Current status
     private var status : CLAuthorizationStatus
     
@@ -68,7 +72,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     // MARK: - API
     
-    /// Check status and get stream of async data
+    /// Check status and get stream of async data Throw an error ``LocationManagerErrors`` if permission is not granted
     public var start : AsyncStream<CLLocation>{
         get async throws {
             if await getPermission{
@@ -86,12 +90,21 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     // MARK: - Private
     
+    // Authorization
+    
     /// Get status asynchronously and check is it authorized to start getting the stream of locations
     private var getPermission: Bool{
         get async{
             let status = await requestPermission()
             return isAuthorized(status)
         }
+    }
+    
+    /// Check permission status
+    /// - Parameter status: Status for checking
+    /// - Returns: Return `True` if is allowed
+    private func isAuthorized(_ status : CLAuthorizationStatus) -> Bool{
+        [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
     }
     
     /// Request permission
@@ -106,17 +119,9 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         return await withCheckedContinuation{ continuation in
             permissionAwait = continuation
         }
-        
     }
-    
-    /// Set manager's properties
-    /// - Parameter accuracy: Desired accuracy
-    private func updateSettings(_ accuracy : CLLocationAccuracy?,
-                                _ backgroundUpdates : Bool = false){
-        manager.delegate = self
-        manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
-        manager.allowsBackgroundLocationUpdates = backgroundUpdates
-    }
+   
+    // Streaming locations
     
     /// Start updating
     private func streaming(with continuation : StreamType){
@@ -130,11 +135,15 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         stream?.yield(location)
     }
     
-    /// Check permission status
-    /// - Parameter status: Status for checking
-    /// - Returns: Return `True` if is allowed
-    private func isAuthorized(_ status : CLAuthorizationStatus) -> Bool{
-        [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
+    // Helpers
+    
+    /// Set manager's properties
+    /// - Parameter accuracy: Desired accuracy
+    private func updateSettings(_ accuracy : CLLocationAccuracy?,
+                                _ backgroundUpdates : Bool = false){
+        manager.delegate = self
+        manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
+        manager.allowsBackgroundLocationUpdates = backgroundUpdates
     }
     
     // MARK: - Delegate
