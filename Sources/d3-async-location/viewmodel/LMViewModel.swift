@@ -57,5 +57,4 @@ public final class LMViewModel: ILocationManagerViewModel{
     private func add(_ coordinate : CLLocation) {
         locations.append(coordinate)
     }
-
 }
