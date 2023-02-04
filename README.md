@@ -30,7 +30,7 @@
              }
 ```
 
-### 4. Bake into visual presentation async stream of data from "locations" property of the ViewModel
+### 4. Bake async stream of data from "locations" property of the ViewModel into visual presentation 
 ```
     @ViewBuilder
     var coordinatesTpl: some View{
