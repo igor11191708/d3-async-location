@@ -8,7 +8,6 @@
 import SwiftUI
 import CoreLocation
 
-
 /// ViewModel posting locations asynchronously
 /// Add or inject LMViewModel into a View ```@EnvironmentObject var model: LMViewModel```
 /// Call method start() within async environment to start async stream of locations
