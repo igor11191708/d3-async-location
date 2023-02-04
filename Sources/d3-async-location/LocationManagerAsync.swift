@@ -156,7 +156,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         manager.allowsBackgroundLocationUpdates = backgroundUpdates
     }
     
-    /// Precess termination
+    /// Process termination
     /// - Parameter termination: A type that indicates how the stream terminated.
     private func onTermination(_ termination: Termination){
          switch termination {
