@@ -8,11 +8,12 @@
 import SwiftUI
 import CoreLocation
 
+
 /// Viewmodel posting locations
 /// Add or inject LMViewModel into a View ```@EnvironmentObject var model: LMViewModel```
 /// Call method start() within async environment to start async stream of locations
 @available(iOS 15.0, watchOS 7.0, *)
-public final class LMViewModel: ILocationManagerViewModel{
+public actor LMViewModel: ILocationManagerViewModel{
     
     // MARK: - Public
     
@@ -23,7 +24,15 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     /// Async locations manager
     private let manager : LocationManagerAsync
-        
+    
+    /// Current streaming state
+    private var state : LocationStreamingState = .idle
+    
+    /// Check if streaming is idle
+    private var isIdle: Bool{
+        state == .idle
+    }
+       
     // MARK: - Life circle
     
     /// - Parameters:
@@ -43,13 +52,19 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     /// Start streaming locations
     public func start() async throws{
-        for await coordinate in try await manager.start{
-            await add(coordinate)
+        if isIdle{
+            state = .streaming
+            for await coordinate in try await manager.start{
+                await add(coordinate)
+            }
+        }else{
+            throw LocationManagerErrors.streamHasAlreadyStarted
         }
     }
     
     /// Start streaming locations
     public func stop(){
+        state = .idle
         manager.stop()
     }
     
