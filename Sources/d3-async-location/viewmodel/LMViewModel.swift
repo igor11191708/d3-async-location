@@ -64,9 +64,7 @@ public final class LMViewModel: ILocationManagerViewModel{
             }
         }catch{
             
-            state = .idle // if access was not granted just set state to idle, manager did not get started in this case
-            
-            if isStreamCancelled(with: error){ stop() }
+            stop()
             
             throw error
         }
@@ -84,19 +82,6 @@ public final class LMViewModel: ILocationManagerViewModel{
     }
     
     // MARK: - Private
-    
-    
-    /// Check if it is cancelation error
-    /// - Parameter error: Error from manager
-    /// - Returns: true is stream was canceled
-    func isStreamCancelled(with error : Error) -> Bool{
-        
-        if let e = error as? AsyncLocationErrors{
-            return [AsyncLocationErrors.streamCancelled, .unknownTermination].contains(e)
-        }
-        
-        return false
-    }
         
     /// Add new location
     /// - Parameter coordinate: data
