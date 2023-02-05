@@ -69,7 +69,7 @@ public protocol ILocationManagerViewModel: ObservableObject{
     func start() async throws
     
     /// Stop streaming locations
-    func stop() async
+    func stop()
 }
 ```
 
