@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-///Location manager streaming data asynchronously via instance of ``AsyncStream`` returning from ``start`` asking permission in advance if it's not determined.
+///Location manager streaming data asynchronously via instance of ``AsyncThrowingStream`` returning from ``start`` asking permission in advance if it's not determined.
 @available(iOS 15.0, watchOS 7.0, *)
 public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, ILocationManagerAsync{
                
@@ -27,7 +27,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     }
    
     /// Continuation asynchronously passing location data
-    private var stream: StreamType?{
+    private var stream: Streaming?{
         didSet {
             stream?.onTermination = { @Sendable termination in
                 self.onTermination(termination)
@@ -39,7 +39,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     // Authorization
     
     /// Continuation to get permission if status is not defined
-    private var permissionAwait : CheckedContinuation<CLAuthorizationStatus,Never>?
+    private var permissioning : Permissioning?
        
     /// Current status
     private var status : CLAuthorizationStatus
@@ -127,14 +127,14 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         
         /// Suspension point until we get permission from the user
         return await withCheckedContinuation{ continuation in
-            permissionAwait = continuation
+            permissioning = continuation
         }
     }
    
     // Streaming locations
     
     /// Start updating
-    private func streaming(with continuation : StreamType){
+    private func streaming(with continuation : Streaming){
         stream = continuation
         manager.startUpdatingLocation()
     }
@@ -181,11 +181,14 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// - Parameter manager: Location manager
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
             status = manager.authorizationStatus
-            permissionAwait?.resume(returning: status)
+            permissioning?.resume(returning: status)
     }
 }
 
+// MARK: - Alias types -
 
 fileprivate typealias Termination = AsyncThrowingStream<CLLocation, Error>.Continuation.Termination
 
-fileprivate typealias StreamType = AsyncThrowingStream<CLLocation, Error>.Continuation
+fileprivate typealias Streaming = AsyncThrowingStream<CLLocation, Error>.Continuation
+
+fileprivate typealias Permissioning = CheckedContinuation<CLAuthorizationStatus,Never>

@@ -7,11 +7,13 @@
 
 import Foundation
 
-/// streaming states
+/// Streaming states
 @available(iOS 15.0, watchOS 7.0, *)
 enum LocationStreamingState{
     
+    /// not streaming
     case idle    
    
+    /// streaming has been started
     case streaming
 }
