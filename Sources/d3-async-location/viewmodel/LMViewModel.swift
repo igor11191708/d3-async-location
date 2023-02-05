@@ -74,6 +74,7 @@ public final class LMViewModel: ILocationManagerViewModel{
     public func stop(){
   
             manager.stop()
+        
             state = .idle
 
             #if DEBUG
