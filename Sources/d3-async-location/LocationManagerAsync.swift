@@ -10,7 +10,6 @@ import CoreLocation
 ///Location manager streaming data asynchronously via instance of ``AsyncThrowingStream`` returning from ``start`` asking permission in advance if it's not determined.
 @available(iOS 15.0, watchOS 7.0, *)
 public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, ILocationManagerAsync{
-               
     
     // MARK: - Private properties
    
@@ -36,18 +35,8 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         }
     }
     
-    // Authorization
-    
-    /// Continuation to get permission if status is not defined
-    private var permissioning : Permissioning?
-       
-    /// Current status
-    private var status : CLAuthorizationStatus
-    
-    /// Check if status is determined
-    private var isDetermined : Bool{
-        status != .notDetermined
-    }
+    /// Authorization Permission helper
+    private var permission : Permission
     
     // MARK: - Life circle
     
@@ -64,9 +53,8 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
 
     override init(){
         
-        manager = CLLocationManager()
-        
-        status = manager.authorizationStatus
+        manager = .init()
+        permission = .init(status: manager.authorizationStatus)
         
         super.init()
         
@@ -77,7 +65,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// Check status and get stream of async data Throw an error ``LocationManagerErrors`` if permission is not granted
     public var start : AsyncThrowingStream<CLLocation, Error>{
         get async throws {
-            if await getPermission{
+            if await permission.isGranted(for: manager){
                 #if DEBUG
                 print("start")
                 #endif
@@ -89,7 +77,6 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     /// Stop streaming
     public func stop(){
-        
         stream = nil
         manager.stopUpdatingLocation()
         
@@ -99,37 +86,6 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     }
     
     // MARK: - Private
-    
-    // Authorization
-    
-    /// Get status asynchronously and check is it authorized to start getting the stream of locations
-    private var getPermission: Bool{
-        get async{
-            let status = await requestPermission()
-            return isAuthorized(status)
-        }
-    }
-    
-    /// Check permission status
-    /// - Parameter status: Status for checking
-    /// - Returns: Return `True` if is allowed
-    private func isAuthorized(_ status : CLAuthorizationStatus) -> Bool{
-        [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
-    }
-    
-    /// Request permission
-    /// Don't forget to add in Info "Privacy - Location When In Use Usage Description" something like "Show list of locations"
-    /// - Returns: Permission status
-    private func requestPermission() async -> CLAuthorizationStatus{
-        manager.requestWhenInUseAuthorization()
-        
-        if isDetermined{ return status }
-        
-        /// Suspension point until we get permission from the user
-        return await withCheckedContinuation{ continuation in
-            permissioning = continuation
-        }
-    }
    
     // Streaming locations
     
@@ -180,8 +136,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// Determine status after the request permission
     /// - Parameter manager: Location manager
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-            status = manager.authorizationStatus
-            permissioning?.resume(returning: status)
+        permission.locationManagerDidChangeAuthorization(manager)
     }
 }
 
@@ -190,5 +145,3 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
 fileprivate typealias Termination = AsyncThrowingStream<CLLocation, Error>.Continuation.Termination
 
 fileprivate typealias Streaming = AsyncThrowingStream<CLLocation, Error>.Continuation
-
-fileprivate typealias Permissioning = CheckedContinuation<CLAuthorizationStatus,Never>
