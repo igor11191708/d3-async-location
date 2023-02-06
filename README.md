@@ -16,14 +16,16 @@
 ### 2. Add or inject LMViewModel into a View
 
 ```
-    @EnvironmentObject var model: LMViewModel
-    
-    - LMViewModel Parameters:
-       - accuracy:          The accuracy of a geographical coordinate.
-       - activityType:      Constants indicating the type of activity associated with location updates.
-       - distanceFilter:    A distance in meters from an existing location.
-       - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
+    @EnvironmentObject var model: LMViewModel   
+
 ```
+
+#### LMViewModel Parameters
+||Param||Description||
+|accuracy| The accuracy of a geographical coordinate.|
+|activityType|Constants indicating the type of activity associated with location updates.|
+|distanceFilter|A distance in meters from an existing location.|
+|backgroundUpdates|A Boolean value that indicates whether the app receives location updates when running in the background|
 
 
 
