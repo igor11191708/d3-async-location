@@ -27,7 +27,7 @@ final class Permission{
     private var isDetermined : Bool{ status != .notDetermined }
     
     /// Subscription to authorization status changes
-    private var canellable : AnyCancellable?
+    private var cancelable : AnyCancellable?
         
     // MARK: - Life circle
     
@@ -42,12 +42,14 @@ final class Permission{
     public func isGranted(for manager: CLLocationManager) async -> Bool{
         let status = await requestPermission(manager)
         return isAuthorized(status)
-    }    
+    }
     
     // MARK: - Private methods
     
+    
+    /// Subscribe for event when location manager change authorization status to go on access permission flow
     private func initSubscription(){
-        canellable = NotificationCenter.default.publisher(for: Permission.authorizationStatus, object: nil)
+        cancelable = NotificationCenter.default.publisher(for: Permission.authorizationStatus, object: nil)
             .sink { [weak self] value in
                 self?.authorizationChanged(value)
             }
