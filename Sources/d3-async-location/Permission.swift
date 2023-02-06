@@ -34,6 +34,8 @@ final class Permission{
         
     // MARK: - Life circle
     
+    /// Init defining is access to location service is granted
+    /// - Parameter status: Constant indicating the app's authorization to use location services
     init(with status: CLAuthorizationStatus){
         self.status = status
         initSubscription()
@@ -69,7 +71,7 @@ final class Permission{
     }
     
     /// Check permission status
-    /// - Parameter status: Status for checking
+    /// - Parameter status: Constant indicating the app's authorization to use location services
     /// - Returns: Return `True` if is allowed
     private func isAuthorized(_ status : CLAuthorizationStatus) -> Bool{
         [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
