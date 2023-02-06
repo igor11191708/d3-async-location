@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-///Location manager streaming data asynchronously via instance of ``AsyncThrowingStream`` returning from ``start`` asking permission in advance if it's not determined.
+///Location manager streaming data asynchronously via instance of `AsyncThrowingStream` returning from ``start`` asking permission in advance if it's not determined.
 @available(iOS 15.0, watchOS 7.0, *)
 public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, ILocationManagerAsync{
     
@@ -64,7 +64,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     // MARK: - API
     
-    /// Check status and get stream of async data Throw an error ``LocationManagerErrors`` if permission is not granted
+    /// Check status and get stream of async data Throw an error ``AsyncLocationErrors`` if permission is not granted
     public var start : AsyncThrowingStream<CLLocation, Error>{
         get async throws {
             if await permission.isGranted(for: manager){
@@ -127,10 +127,10 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     // MARK: - Delegate
     
-    /// Pass ``CLLocation`` into the async stream
+    /// Pass `CLLocation` into the async stream
     /// - Parameters:
     ///   - manager: Location manager
-    ///   - locations: Array of ``CLLocation``
+    ///   - locations: Array of `CLLocation`
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             locations.forEach{ pass(location: $0) }
     }
