@@ -33,7 +33,7 @@ final class Permission{
     public func isGranted(for manager: CLLocationManager) async -> Bool{
         let status = await requestPermission(manager)
         return isAuthorized(status)
-    }    
+    }
     
     /// Determine status after the request permission
     /// - Parameter manager: Location manager
@@ -51,7 +51,10 @@ final class Permission{
     private func isAuthorized(_ status : CLAuthorizationStatus) -> Bool{
         [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
     }
-
+    
+    /// Request permission
+    /// Don't forget to add in Info "Privacy - Location When In Use Usage Description" something like "Show list of locations"
+    /// - Returns: Permission status
     private func requestPermission(_ manager : CLLocationManager) async -> CLAuthorizationStatus{
         manager.requestWhenInUseAuthorization()
         
