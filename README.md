@@ -21,7 +21,8 @@
 ```
 
 #### LMViewModel Parameters
-||Param||Description||
+|Param|Description|
+| --- | --- |
 |accuracy| The accuracy of a geographical coordinate.|
 |activityType|Constants indicating the type of activity associated with location updates.|
 |distanceFilter|A distance in meters from an existing location.|
