@@ -66,5 +66,4 @@ final class Permission{
             permissioning = continuation
         }
     }
-    
 }
