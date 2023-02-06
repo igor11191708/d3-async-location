@@ -11,6 +11,8 @@ import CoreLocation
 @available(iOS 15.0, watchOS 7.0, *)
 final class Permission{
     
+    // MARK: - Private properties
+    
     /// Current status
     private var status : CLAuthorizationStatus
     
@@ -18,9 +20,7 @@ final class Permission{
     private var permissioning : CheckedContinuation<CLAuthorizationStatus, Never>?
     
     /// Check if status is determined
-    private var isDetermined : Bool{
-        status != .notDetermined
-    }
+    private var isDetermined : Bool{ status != .notDetermined }
     
     // MARK: - Life circle
     
