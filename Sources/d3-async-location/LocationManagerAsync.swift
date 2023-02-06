@@ -21,7 +21,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     // Streaming locations
     
-    /// Async stream of locations
+    /// Async stream of ``CLLocation``
     private var locations : AsyncThrowingStream<CLLocation, Error>{
         .init(CLLocation.self) { continuation in
                 streaming(with: continuation)
@@ -97,7 +97,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         manager.startUpdatingLocation()
     }
     
-    /// Passing location data
+    /// Passing ``CLLocation`` data
     /// - Parameter location: Location data
     private func pass(location : CLLocation){
         stream?.yield(location)
@@ -127,10 +127,10 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     // MARK: - Delegate
     
-    /// Pass locations into the async stream
+    /// Pass ``CLLocation`` into the async stream
     /// - Parameters:
     ///   - manager: Location manager
-    ///   - locations: Array of locations
+    ///   - locations: Array of ``CLLocation``
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
             locations.forEach{ pass(location: $0) }
     }

@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-/// Helper class to determine permission to get access for streaming CLLocations
+/// Helper class to determine permission to get access for streaming ``CLLocation``
 @available(iOS 15.0, watchOS 7.0, *)
 final class Permission{
     
