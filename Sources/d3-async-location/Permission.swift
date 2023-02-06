@@ -33,8 +33,10 @@ final class Permission{
     public func isGranted(for manager: CLLocationManager) async -> Bool{
         let status = await requestPermission(manager)
         return isAuthorized(status)
-    }
+    }    
     
+    /// Determine status after the request permission
+    /// - Parameter manager: Location manager
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         status = manager.authorizationStatus
         
