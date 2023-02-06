@@ -22,7 +22,7 @@ final class Permission{
     private var status : CLAuthorizationStatus
     
     /// Continuation to get permission if status is not defined
-    private var permissioning : CheckedContinuation<CLAuthorizationStatus, Never>?
+    private var flow : CheckedContinuation<CLAuthorizationStatus, Never>?
     
     /// Check if status is determined
     private var isDetermined : Bool{ status != .notDetermined }
@@ -50,19 +50,19 @@ final class Permission{
     
     /// Subscribe for event when location manager change authorization status to go on access permission flow
     private func initSubscription(){
-        cancelable = NotificationCenter.default.publisher(for: Permission.authorizationStatus, object: nil)
+        let name = Permission.authorizationStatus
+        cancelable = NotificationCenter.default.publisher(for: name)
             .sink { [weak self] value in
-                self?.authorizationChanged(value)
+                self?.statusChanged(value)
             }
     }
     
     /// Determine status after the request permission
     /// - Parameter manager: Location manager
-    private func authorizationChanged(_ value: Output) {
+    private func statusChanged(_ value: Output) {
         if let s = value.object as? CLAuthorizationStatus{
             status = s
-            permissioning?.resume(returning: status)
-            print(status, "authorizationStatus")
+            flow?.resume(returning: status)
         }
     }
     
@@ -84,7 +84,7 @@ final class Permission{
         }
         
         return await withCheckedContinuation{ continuation in
-            permissioning = continuation
+            flow = continuation
         }
     }
 }
