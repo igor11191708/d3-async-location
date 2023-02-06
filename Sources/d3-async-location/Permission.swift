@@ -14,7 +14,7 @@ final class Permission{
     private var status : CLAuthorizationStatus
     
     /// Continuation to get permission if status is not defined
-    private var premising : CheckedContinuation<CLAuthorizationStatus, Never>?
+    private var permissioning : CheckedContinuation<CLAuthorizationStatus, Never>?
     
     /// Check if status is determined
     private var isDetermined : Bool{
@@ -38,7 +38,7 @@ final class Permission{
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         status = manager.authorizationStatus
         
-        premising?.resume(returning: status)
+        permissioning?.resume(returning: status)
     }
     
     // MARK: - Private methods
@@ -58,7 +58,7 @@ final class Permission{
         }
         
         return await withCheckedContinuation{ continuation in
-            premising = continuation
+            permissioning = continuation
         }
     }
     
