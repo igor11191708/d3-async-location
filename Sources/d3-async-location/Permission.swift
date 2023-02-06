@@ -7,7 +7,6 @@
 
 import CoreLocation
 
-
 /// Helper class to determine permission to get access for streaming CLLocations
 final class Permission{
     

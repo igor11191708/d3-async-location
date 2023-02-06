@@ -16,6 +16,9 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// Location manager
     private let manager : CLLocationManager
     
+    /// Authorization Permission helper
+    private var permission : Permission
+    
     // Streaming locations
     
     /// Async stream of locations
@@ -35,9 +38,6 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         }
     }
     
-    /// Authorization Permission helper
-    private var permission : Permission
-    
     // MARK: - Life circle
     
     /// - Parameters:
@@ -54,6 +54,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     override init(){
         
         manager = .init()
+        
         permission = .init(status: manager.authorizationStatus)
         
         super.init()
