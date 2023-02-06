@@ -132,7 +132,7 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
             locations.forEach{ pass(location: $0) }
     }
     
-    /// Determine status after the request permission
+    /// Notify about location manager changed authorization status
     /// - Parameter manager: Location manager
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         NotificationCenter.default.post(name: Permission.authorizationStatus, object: manager.authorizationStatus)

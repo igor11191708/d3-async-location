@@ -13,6 +13,7 @@ import SwiftUI
 @available(iOS 15.0, watchOS 7.0, *)
 final class Permission{
     
+    /// Name of notification for event location manager changed authorization status
     static let authorizationStatus = Notification.Name("authorizationStatus")
     
     // MARK: - Private properties
