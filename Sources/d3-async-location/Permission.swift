@@ -24,7 +24,7 @@ final class Permission{
     
     // MARK: - Life circle
     
-    init(status: CLAuthorizationStatus){
+    init(with status: CLAuthorizationStatus){
         self.status = status
     }
     

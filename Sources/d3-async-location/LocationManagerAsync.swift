@@ -49,13 +49,14 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         self.init()
         
         updateSettings(accuracy, backgroundUpdates)
+
     }
 
     override init(){
         
         manager = .init()
         
-        permission = .init(status: manager.authorizationStatus)
+        permission = .init(with: manager.authorizationStatus)
         
         super.init()
         
