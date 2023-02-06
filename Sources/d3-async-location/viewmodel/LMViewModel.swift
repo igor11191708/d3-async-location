@@ -34,12 +34,17 @@ public final class LMViewModel: ILocationManagerViewModel{
     }
        
     // MARK: - Life circle
-    
+
     /// - Parameters:
     ///   - accuracy: The accuracy of a geographical coordinate.
+    ///   - activityType: Constants indicating the type of activity associated with location updates.
+    ///   - distanceFilter: A distance in meters from an existing location.
     ///   - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
-    public init(accuracy : CLLocationAccuracy? = nil, backgroundUpdates : Bool = false){
-        manager = LocationManagerAsync(accuracy, backgroundUpdates)
+    public init(accuracy : CLLocationAccuracy? = nil,
+                activityType: CLActivityType? = nil,
+                distanceFilter: CLLocationDistance? = nil,
+                backgroundUpdates : Bool = false){
+        manager = LocationManagerAsync(accuracy, activityType, distanceFilter, backgroundUpdates)
     }
     
     deinit{

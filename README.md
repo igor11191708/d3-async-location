@@ -17,7 +17,15 @@
 
 ```
     @EnvironmentObject var model: LMViewModel
+    
+    - LMViewModel Parameters:
+       - accuracy:          The accuracy of a geographical coordinate.
+       - activityType:      Constants indicating the type of activity associated with location updates.
+       - distanceFilter:    A distance in meters from an existing location.
+       - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
 ```
+
+
 
 ### 3. Call ViewModel method start() within async environment
 If task will be canceled the streaming stops automatically. I would recomend to use .task modifire it manages cancelation on it's own. If you desided to use Task and keep it in @State don't forget to cancel() when the time has come or it might course memory leaks in some cases

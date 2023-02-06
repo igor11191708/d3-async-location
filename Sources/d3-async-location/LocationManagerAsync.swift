@@ -41,11 +41,13 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     ///   - accuracy: The accuracy of a geographical coordinate.
     ///   - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
     public convenience init(_ accuracy : CLLocationAccuracy?,
+                            _ activityType: CLActivityType?,
+                            _ distanceFilter: CLLocationDistance?,
                             _ backgroundUpdates : Bool = false){
         
         self.init()
         
-        updateSettings(accuracy, backgroundUpdates)
+        updateSettings(accuracy, activityType, distanceFilter, backgroundUpdates)
 
     }
 
@@ -105,10 +107,15 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// Set manager's properties
     /// - Parameter accuracy: Desired accuracy
     private func updateSettings(_ accuracy : CLLocationAccuracy?,
-                                _ backgroundUpdates : Bool = false){
+                                _ activityType: CLActivityType?,
+                                _ distanceFilter: CLLocationDistance?,
+                                _ backgroundUpdates : Bool = false
+    ){
         manager.delegate = self
         manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
         manager.allowsBackgroundLocationUpdates = backgroundUpdates
+        manager.activityType = activityType ?? .other
+        manager.distanceFilter = distanceFilter ?? kCLDistanceFilterNone
     }
     
     /// Process termination
