@@ -16,8 +16,7 @@
 ### 2. Add or inject LMViewModel into a View
 
 ```
-    @EnvironmentObject var model: LMViewModel   
-
+    @EnvironmentObject var model: LMViewModel 
 ```
 
 ### 3. Call ViewModel method start() within async environment
