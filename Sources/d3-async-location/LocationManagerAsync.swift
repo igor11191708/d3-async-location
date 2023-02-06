@@ -16,9 +16,6 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// Location manager
     private let manager : CLLocationManager
     
-    /// Authorization Permission helper
-    private var permission : Permission
-    
     // Streaming locations
     
     /// Async stream of ``CLLocation``
@@ -56,8 +53,6 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
         
         manager = .init()
         
-        permission = .init(with: manager.authorizationStatus)
-        
         super.init()
         
     }
@@ -67,6 +62,8 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// Check status and get stream of async data Throw an error ``AsyncLocationErrors`` if permission is not granted
     public var start : AsyncThrowingStream<CLLocation, Error>{
         get async throws {
+            let permission = Permission(with: manager.authorizationStatus)
+            
             if await permission.isGranted(for: manager){
                 #if DEBUG
                 print("start")
@@ -138,12 +135,11 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     /// Determine status after the request permission
     /// - Parameter manager: Location manager
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        permission.locationManagerDidChangeAuthorization(manager)
+        NotificationCenter.default.post(name: Permission.authorizationStatus, object: manager.authorizationStatus)
     }
 }
 
 // MARK: - Alias types -
 
 fileprivate typealias Termination = AsyncThrowingStream<CLLocation, Error>.Continuation.Termination
-
 fileprivate typealias Streaming = AsyncThrowingStream<CLLocation, Error>.Continuation

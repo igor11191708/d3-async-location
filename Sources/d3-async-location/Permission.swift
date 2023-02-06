@@ -6,10 +6,14 @@
 //
 
 import CoreLocation
+import Combine
+import SwiftUI
 
 /// Helper class to determine permission to get access for streaming ``CLLocation``
 @available(iOS 15.0, watchOS 7.0, *)
 final class Permission{
+    
+    static let authorizationStatus = Notification.Name("authorizationStatus")
     
     // MARK: - Private properties
     
@@ -22,10 +26,14 @@ final class Permission{
     /// Check if status is determined
     private var isDetermined : Bool{ status != .notDetermined }
     
+    /// Subscription to authorization status changes
+    private var canellable : AnyCancellable?
+        
     // MARK: - Life circle
     
     init(with status: CLAuthorizationStatus){
         self.status = status
+        initSubscription()
     }
     
     // MARK: - API
@@ -34,17 +42,26 @@ final class Permission{
     public func isGranted(for manager: CLLocationManager) async -> Bool{
         let status = await requestPermission(manager)
         return isAuthorized(status)
+    }    
+    
+    // MARK: - Private methods
+    
+    private func initSubscription(){
+        canellable = NotificationCenter.default.publisher(for: Permission.authorizationStatus, object: nil)
+            .sink { [weak self] value in
+                self?.authorizationChanged(value)
+            }
     }
     
     /// Determine status after the request permission
     /// - Parameter manager: Location manager
-    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        status = manager.authorizationStatus
-        
-        permissioning?.resume(returning: status)
+    private func authorizationChanged(_ value: Output) {
+        if let s = value.object as? CLAuthorizationStatus{
+            status = s
+            permissioning?.resume(returning: status)
+            print(status, "authorizationStatus")
+        }
     }
-    
-    // MARK: - Private methods
     
     /// Check permission status
     /// - Parameter status: Status for checking
@@ -68,3 +85,7 @@ final class Permission{
         }
     }
 }
+
+// MARK: - Alias types -
+
+fileprivate typealias Output = NotificationCenter.Publisher.Output
