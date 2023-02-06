@@ -18,14 +18,16 @@ final class Permission{
     
     // MARK: - Private properties
     
-    /// Current status
+    /// The current authorization status for the app
     private var status : CLAuthorizationStatus
     
     /// Continuation to get permission if status is not defined
     private var flow : CheckedContinuation<CLAuthorizationStatus, Never>?
     
     /// Check if status is determined
-    private var isDetermined : Bool{ status != .notDetermined }
+    private var isDetermined : Bool{
+        status != .notDetermined
+    }
     
     /// Subscription to authorization status changes
     private var cancelable : AnyCancellable?
@@ -73,13 +75,13 @@ final class Permission{
         [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
     }
     
-    /// Request permission
+    /// Requests the user’s permission to use location services while the app is in use
     /// Don't forget to add in Info "Privacy - Location When In Use Usage Description" something like "Show list of locations"
     /// - Returns: Permission status
     private func requestPermission(_ manager : CLLocationManager) async -> CLAuthorizationStatus{
         manager.requestWhenInUseAuthorization()
         
-        if status != .notDetermined{
+        if isDetermined{
             return status
         }
         
