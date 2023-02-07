@@ -40,6 +40,10 @@ extension LocationManagerAsync{
             NotificationCenter.default.post(name: Permission.authorizationStatus, object: manager.authorizationStatus)
         }
         
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print(error)
+        }
+        
         // MARK: - Private
         
         /// Process termination

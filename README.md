@@ -79,6 +79,14 @@ public protocol ILocationManagerViewModel: ObservableObject{
 |distanceFilter|A distance in meters from an existing location.|
 |backgroundUpdates|A Boolean value that indicates whether the app receives location updates when running in the background|
 
+### Default location
+1. Product > Scheme > Edit Scheme
+2. Click Run .app
+3. Option tab
+4. Already checked Core Location > select your location
+5. Press OK
+ ![Default location](https://github.com/The-Igor/d3-async-location/blob/main/img/image6.png)
+
 ## SwiftUI example of using package
 [async-location-swift-example](https://github.com/The-Igor/async-location-swift-example)
 
