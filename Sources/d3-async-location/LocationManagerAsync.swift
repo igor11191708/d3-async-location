@@ -63,7 +63,7 @@ final class LocationManagerAsync: ILocationManagerAsync{
     
     /// Stop streaming
     public func stop(){
-        delegate.stream = nil       
+        delegate.stream = nil
         manager.stopUpdatingLocation()
         
         #if DEBUG
@@ -96,9 +96,9 @@ final class LocationManagerAsync: ILocationManagerAsync{
     ){
         manager.delegate = delegate
         manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
-        manager.allowsBackgroundLocationUpdates = backgroundUpdates
         manager.activityType = activityType ?? .other
         manager.distanceFilter = distanceFilter ?? kCLDistanceFilterNone
+        manager.allowsBackgroundLocationUpdates = backgroundUpdates
     }
 }
 
