@@ -36,13 +36,11 @@ final class LocationManagerAsync: ILocationManagerAsync{
     ///   - distanceFilter: A distance in meters from an existing location.
     ///   - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
     init(_ accuracy : CLLocationAccuracy?,
-                            _ activityType: CLActivityType?,
-                            _ distanceFilter: CLLocationDistance?,
-                            _ backgroundUpdates : Bool = false){
-        
+         _ activityType: CLActivityType?,
+         _ distanceFilter: CLLocationDistance?,
+         _ backgroundUpdates : Bool = false){
         
         updateSettings(accuracy, activityType, distanceFilter, backgroundUpdates)
-
     }
 
    
@@ -65,10 +63,7 @@ final class LocationManagerAsync: ILocationManagerAsync{
     
     /// Stop streaming
     public func stop(){
-        if let delegate = manager.delegate as? Delegate {
-            delegate.stream = nil
-        }
-       
+        delegate.stream = nil       
         manager.stopUpdatingLocation()
         
         #if DEBUG
