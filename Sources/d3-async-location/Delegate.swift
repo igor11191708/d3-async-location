@@ -9,6 +9,8 @@ import CoreLocation
 
 extension LocationManagerAsync{
     
+    /// The methods that you use to receive events from an associated location-manager object
+    /// The location manager calls its delegate’s methods to report location-related events to your app.
     final class Delegate: NSObject, CLLocationManagerDelegate{
         
         /// Continuation asynchronously passing location data
@@ -52,7 +54,7 @@ extension LocationManagerAsync{
             stream?.yield(location)
         }
         
-    }    
+    }
     
     // MARK: - Alias types -
 
