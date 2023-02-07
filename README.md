@@ -6,7 +6,7 @@
 - [x] Customizable in terms of CLLocationManager properties
 - [x] Streaming current locations asynchronously
 - [x] Support for iOS and watchOS
-- [x] Errors handling
+- [x] Errors handling (as custom so CoreLocation errors)
 
 ## How to use
  
@@ -52,6 +52,9 @@ If task will be canceled the streaming stops automatically. I would recomend to 
     
     /// Stream was cancelled or terminated
     case streamTerminated
+
+    /// A Core Location error
+    case coreLocationManagerError(CLError)
 ```
 
 ### LMViewModel API
@@ -85,6 +88,7 @@ public protocol ILocationManagerViewModel: ObservableObject{
 3. Option tab
 4. Already checked Core Location > select your location
 5. Press OK
+
  ![Default location](https://github.com/The-Igor/d3-async-location/blob/main/img/image6.png)
 
 ## SwiftUI example of using package

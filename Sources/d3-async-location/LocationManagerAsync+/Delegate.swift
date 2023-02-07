@@ -40,8 +40,21 @@ extension LocationManagerAsync{
             NotificationCenter.default.post(name: Permission.authorizationStatus, object: manager.authorizationStatus)
         }
         
+        
+        /// Tells the delegate that the location manager was unable to retrieve a location value
+        /// - Parameters:
+        ///   - manager: The location manager object that was unable to retrieve the location
+        ///   - error: The error object containing the reason the location or heading could not be retrieved
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-            print(error)
+            guard let e = error as? CLError else{ return }
+            
+                if e.code == CLError.locationUnknown{
+                    return /// glitch throwing this error on some devices and simulator while changing locations time by time
+                }
+              
+                let type = AsyncLocationErrors.self
+                stream?.finish(throwing: type.coreLocationManagerError(e))
+
         }
         
         // MARK: - Private

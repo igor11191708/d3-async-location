@@ -16,7 +16,7 @@ final class LocationManagerAsync: ILocationManagerAsync{
     /// Location manager
     private let manager = CLLocationManager()
     
-    /// Delegate adapter
+    /// Delegate
     private let delegate = Delegate()
     
     // Streaming locations

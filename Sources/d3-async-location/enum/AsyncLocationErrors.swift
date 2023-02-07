@@ -5,7 +5,7 @@
 //  Created by Igor on 03.02.2023.
 //
 
-import Foundation
+import CoreLocation
 
 /// Async locations manager errors
 @available(iOS 15.0, watchOS 7.0, *)
@@ -21,4 +21,7 @@ public enum AsyncLocationErrors: Error{
     /// Stream was cancelled or terminated
     case streamTerminated
 
+    /// A Core Location error
+    case coreLocationManagerError(CLError)
+    
 }
