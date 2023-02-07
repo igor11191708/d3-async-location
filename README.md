@@ -20,7 +20,7 @@
 ```
 
 ### 3. Call ViewModel method start() within async environment
-If task will be canceled the streaming stops automatically. I would recomend to use .task modifire it manages cancelation on it's own. If you need to use Task and keep it in @State don't forget to cancel() when the time has come or it might course memory leaks in some cases
+If task will be canceled the streaming stops automatically. I would recommend to use .task modifier it manages cancelation on it's own. If you need to use Task and keep it in @State don't forget to cancel() when the time has come or it might course memory leaks in some cases
 ```
  .task{
        do{
@@ -94,7 +94,7 @@ public protocol ILocationManagerViewModel: ObservableObject{
  ![Default location](https://github.com/The-Igor/d3-async-location/blob/main/img/image6.png)
 
 ### as for tvOS ?!
-I decided not include tv OS support not to complicate the package and TV does not move around and requeares only once request location in practical sence. tvOS does not support CLLocationManager method **startUpdatingLocation**. I have a plan to develop defferent service based on the method **requestLocation** that requests the one-time delivery of the user’s current location.
+I decided not include tv OS support to the package not to complicate it and as TV usually does not move around, it requires only once request location in practical sense. Also tvOS does not support CLLocationManager method **startUpdatingLocation**. I have a plan to develop different service based on the method **requestLocation** that requests the one-time delivery of the user’s current location.
 [CLLocationManager.requestLocation](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620548-requestlocation)
 
  
