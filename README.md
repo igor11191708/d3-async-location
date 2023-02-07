@@ -92,11 +92,6 @@ public protocol ILocationManagerViewModel: ObservableObject{
 5. Press OK
 
  ![Default location](https://github.com/The-Igor/d3-async-location/blob/main/img/image6.png)
-
-### as for tvOS ?!
-I decided not include tv OS support to the package not to complicate it and as TV usually does not move around, it requires only once request location in practical sense. Also tvOS does not support CLLocationManager method **startUpdatingLocation**. I have a plan to develop different service based on the method **requestLocation** that requests the one-time delivery of the user’s current location.
-[CLLocationManager.requestLocation](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620548-requestlocation)
-
  
 ## SwiftUI example of using package
 [async-location-swift-example](https://github.com/The-Igor/async-location-swift-example)
