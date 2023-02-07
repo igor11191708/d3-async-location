@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Delegate.swift
 //  
 //
 //  Created by Igor on 07.02.2023.
