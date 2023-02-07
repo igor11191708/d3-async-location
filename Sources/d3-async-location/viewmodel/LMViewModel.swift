@@ -84,7 +84,7 @@ public final class LMViewModel: ILocationManagerViewModel{
             state = .idle
 
             #if DEBUG
-            print("stop viewmodel")
+            print("stop manager")
             #endif
     }
     

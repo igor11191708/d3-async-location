@@ -18,9 +18,7 @@ public enum AsyncLocationErrors: Error{
     /// Subscribe different Views to LMViewModel.locations publisher to feed them
     case streamingProcessHasAlreadyStarted
     
-    /// Stream was cancelled
-    case streamCancelled
-    
-    /// Unknown termination
-    case unknownTermination
+    /// Stream was cancelled or terminated
+    case streamTerminated
+
 }

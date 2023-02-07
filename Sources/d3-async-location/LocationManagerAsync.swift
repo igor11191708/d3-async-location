@@ -9,12 +9,15 @@ import CoreLocation
 
 ///Location manager streaming data asynchronously via instance of `AsyncThrowingStream` returning from ``start`` asking permission in advance if it's not determined.
 @available(iOS 15.0, watchOS 7.0, *)
-public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, ILocationManagerAsync{
+final class LocationManagerAsync: ILocationManagerAsync{
     
     // MARK: - Private properties
    
     /// Location manager
-    private let manager : CLLocationManager
+    private let manager = CLLocationManager()
+    
+    /// Delegate adapter
+    private let delegate = Delegate()
     
     // Streaming locations
     
@@ -24,16 +27,6 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
                 streaming(with: continuation)
             }
     }
-   
-    /// Continuation asynchronously passing location data
-    private var stream: Streaming?{
-        didSet {
-            stream?.onTermination = { @Sendable termination in
-                self.onTermination(termination)
-                
-            }
-        }
-    }
     
     // MARK: - Life circle
     
@@ -42,25 +35,17 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     ///   - activityType: Constants indicating the type of activity associated with location updates.
     ///   - distanceFilter: A distance in meters from an existing location.
     ///   - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
-    public convenience init(_ accuracy : CLLocationAccuracy?,
+    init(_ accuracy : CLLocationAccuracy?,
                             _ activityType: CLActivityType?,
                             _ distanceFilter: CLLocationDistance?,
                             _ backgroundUpdates : Bool = false){
         
-        self.init()
         
         updateSettings(accuracy, activityType, distanceFilter, backgroundUpdates)
 
     }
 
-    override init(){
-        
-        manager = .init()
-        
-        super.init()
-        
-    }
-    
+   
     // MARK: - API
     
     /// Check status and get stream of async data Throw an error ``AsyncLocationErrors`` if permission is not granted
@@ -80,7 +65,10 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     /// Stop streaming
     public func stop(){
-        stream = nil
+        if let delegate = manager.delegate as? Delegate {
+            delegate.stream = nil
+        }
+       
         manager.stopUpdatingLocation()
         
         #if DEBUG
@@ -94,14 +82,8 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
     
     /// Start updating
     private func streaming(with continuation : Streaming){
-        stream = continuation
+        delegate.stream = continuation
         manager.startUpdatingLocation()
-    }
-    
-    /// Passing ``CLLocation`` data
-    /// - Parameter location: Location data
-    private func pass(location : CLLocation){
-        stream?.yield(location)
     }
     
     // Helpers
@@ -117,42 +99,12 @@ public final class LocationManagerAsync: NSObject, CLLocationManagerDelegate, IL
                                 _ distanceFilter: CLLocationDistance?,
                                 _ backgroundUpdates : Bool = false
     ){
-        manager.delegate = self
+        manager.delegate = delegate
         manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
         manager.allowsBackgroundLocationUpdates = backgroundUpdates
         manager.activityType = activityType ?? .other
         manager.distanceFilter = distanceFilter ?? kCLDistanceFilterNone
     }
-    
-    /// Process termination
-    /// - Parameter termination: A type that indicates how the stream terminated.
-    private func onTermination(_ termination: Termination){
-        let type = AsyncLocationErrors.self
-         switch termination {
-              case .finished: stop()
-             case .cancelled: stream?.finish(throwing: type.streamCancelled)
-            @unknown default: stream?.finish(throwing: type.unknownTermination)
-         }
-     }
-    
-    // MARK: - Delegate
-    
-    /// Pass `CLLocation` into the async stream
-    /// - Parameters:
-    ///   - manager: Location manager
-    ///   - locations: Array of `CLLocation`
-    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            locations.forEach{ pass(location: $0) }
-    }
-    
-    /// Notify about location manager changed authorization status
-    /// - Parameter manager: Location manager
-    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        NotificationCenter.default.post(name: Permission.authorizationStatus, object: manager.authorizationStatus)
-    }
 }
 
-// MARK: - Alias types -
 
-fileprivate typealias Termination = AsyncThrowingStream<CLLocation, Error>.Continuation.Termination
-fileprivate typealias Streaming = AsyncThrowingStream<CLLocation, Error>.Continuation

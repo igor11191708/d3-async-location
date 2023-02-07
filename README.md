@@ -50,11 +50,8 @@ If task will be canceled the streaming stops automatically. I would recomend to 
     /// Subscribe different Views to LMViewModel.locations publisher to feed them
     case streamingProcessHasAlreadyStarted
     
-    /// Stream was cancelled
-    case streamCancelled
-    
-    /// Unknown termination
-    case unknownTermination
+    /// Stream was cancelled or terminated
+    case streamTerminated
 ```
 
 ### LMViewModel API
