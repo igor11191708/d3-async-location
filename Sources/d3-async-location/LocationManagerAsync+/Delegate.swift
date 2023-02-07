@@ -47,7 +47,7 @@ extension LocationManagerAsync{
         ///   - error: The error object containing the reason the location or heading could not be retrieved
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             guard let e = error as? CLError else{ return }
-            
+
                 if e.code == CLError.locationUnknown{
                     return /// glitch throwing this error on some devices and simulator while changing locations time by time
                 }

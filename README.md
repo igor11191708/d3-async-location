@@ -57,6 +57,8 @@ If task will be canceled the streaming stops automatically. I would recomend to 
     case coreLocationManagerError(CLError)
 ```
 
+There's been a glitch - throwing **CLError.locationUnknown** *Error Domain=kCLErrorDomain Code=0 "(null)"* on some devices and simulator while changing locations time by time. This type of error *.locationUnknown* is excluded when is happens in delegate method *didFailWithError*
+
 ### LMViewModel API
 ```
 public protocol ILocationManagerViewModel: ObservableObject{
