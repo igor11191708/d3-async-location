@@ -100,4 +100,3 @@ extension LocationManagerAsync{
     fileprivate typealias Output = NotificationCenter.Publisher.Output
     
 }
-

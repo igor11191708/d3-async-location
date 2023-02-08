@@ -54,7 +54,6 @@ extension LocationManagerAsync{
               
                 let type = AsyncLocationErrors.self
                 stream?.finish(throwing: type.coreLocationManagerError(e))
-
         }
         
         // MARK: - Private
@@ -81,5 +80,3 @@ extension LocationManagerAsync{
     typealias Streaming = AsyncThrowingStream<CLLocation, Error>.Continuation
     
 }
-
-
