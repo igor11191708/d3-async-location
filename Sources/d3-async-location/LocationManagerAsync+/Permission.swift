@@ -48,7 +48,7 @@ extension LocationManagerAsync{
         /// Get status asynchronously and check is it authorized to start getting the stream of locations
         public func grant(for manager: CLLocationManager) async throws {
             let status = await requestPermission(manager)
-            if !isAuthorized(status){
+            if status.isNotAuthorized{
                 throw AsyncLocationErrors.accessIsNotAuthorized
             }
         }
@@ -74,13 +74,6 @@ extension LocationManagerAsync{
             }
         }
         
-        /// Check permission status
-        /// - Parameter status: Constant indicating the app's authorization to use location services
-        /// - Returns: Return `True` if is allowed
-        private func isAuthorized(_ status : CLAuthorizationStatus) -> Bool{
-            [CLAuthorizationStatus.authorizedWhenInUse, .authorizedAlways].contains(status)
-        }
-        
         /// Requests the user’s permission to use location services while the app is in use
         /// Don't forget to add in Info "Privacy - Location When In Use Usage Description" something like "Show list of locations"
         /// - Returns: Permission status
@@ -96,9 +89,20 @@ extension LocationManagerAsync{
             }
         }
     }
-    
-    // MARK: - Alias types -
+}
 
-    fileprivate typealias Output = NotificationCenter.Publisher.Output
-    
+// MARK: - Alias types -
+
+fileprivate typealias Output = NotificationCenter.Publisher.Output
+
+// MARK: - Extensions -
+
+fileprivate extension CLAuthorizationStatus {
+    /// Check if access is not authorized
+    /// denied - The user denied the use of location services for the app or they are disabled globally in Settings
+    /// restricted - The app is not authorized to use location services
+    /// - Returns: Return `True` if it was denied
+    var isNotAuthorized: Bool {
+        [.denied, .restricted].contains(self)
+    }
 }
