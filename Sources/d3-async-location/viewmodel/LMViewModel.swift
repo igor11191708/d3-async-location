@@ -64,7 +64,7 @@ public final class LMViewModel: ILocationManagerViewModel{
             throw AsyncLocationErrors.streamingProcessHasAlreadyStarted
         }
         
-        state = .streaming
+        setState(.streaming)        
         
         do {
             for try await coordinate in try await manager.start{
@@ -83,7 +83,7 @@ public final class LMViewModel: ILocationManagerViewModel{
   
             manager.stop()
         
-            state = .idle
+            setState(.idle)
 
             #if DEBUG
             print("stop manager")
@@ -97,5 +97,11 @@ public final class LMViewModel: ILocationManagerViewModel{
     @MainActor
     private func add(_ coordinate : CLLocation) {
         locations.append(coordinate)
+    }
+        
+    /// Set state
+    /// - Parameter value: Streaming state
+    private func setState(_ value: LocationStreamingState) {
+        state = value
     }
 }
