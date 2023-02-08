@@ -46,9 +46,11 @@ extension LocationManagerAsync{
         // MARK: - API
         
         /// Get status asynchronously and check is it authorized to start getting the stream of locations
-        public func isGranted(for manager: CLLocationManager) async -> Bool{
+        public func grant(for manager: CLLocationManager) async throws {
             let status = await requestPermission(manager)
-            return isAuthorized(status)
+            if !isAuthorized(status){
+                throw AsyncLocationErrors.accessIsNotAuthorized
+            }
         }
         
         // MARK: - Private methods

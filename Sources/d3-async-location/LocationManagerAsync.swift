@@ -12,7 +12,7 @@ import CoreLocation
 final class LocationManagerAsync: ILocationManagerAsync{
     
     // MARK: - Private properties
-   
+    
     /// Location manager
     private let manager = CLLocationManager()
     
@@ -24,8 +24,8 @@ final class LocationManagerAsync: ILocationManagerAsync{
     /// Async stream of ``CLLocation``
     private var locations : AsyncThrowingStream<CLLocation, Error>{
         .init(CLLocation.self) { continuation in
-                streaming(with: continuation)
-            }
+            streaming(with: continuation)
+        }
     }
     
     // MARK: - Life circle
@@ -42,8 +42,8 @@ final class LocationManagerAsync: ILocationManagerAsync{
         
         updateSettings(accuracy, activityType, distanceFilter, backgroundUpdates)
     }
-
-   
+    
+    
     // MARK: - API
     
     /// Check status and get stream of async data Throw an error ``AsyncLocationErrors`` if permission is not granted
@@ -51,13 +51,14 @@ final class LocationManagerAsync: ILocationManagerAsync{
         get async throws {
             let permission = Permission(with: manager.authorizationStatus)
             
-            if await permission.isGranted(for: manager){
-                #if DEBUG
-                print("start")
-                #endif
-                return locations
-            }
-            throw AsyncLocationErrors.accessIsNotAuthorized
+            try await permission.grant(for: manager)
+            
+            #if DEBUG
+            print("start")
+            #endif
+            
+            return locations
+            
         }
     }
     
@@ -72,7 +73,7 @@ final class LocationManagerAsync: ILocationManagerAsync{
     }
     
     // MARK: - Private
-   
+    
     // Streaming locations
     
     /// Start updating
@@ -101,5 +102,3 @@ final class LocationManagerAsync: ILocationManagerAsync{
         manager.allowsBackgroundLocationUpdates = backgroundUpdates
     }
 }
-
-
