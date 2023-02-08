@@ -17,7 +17,8 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     // MARK: - Public
     
-    /// List of locations
+    /// List of locations Subscribe different Views to locations publisher to feed them
+    /// or create a proxy to manipulate with the flow like filtering, dropping, mapping etc
     @MainActor @Published public private(set) var locations : [CLLocation] = []
             
     // MARK: - Private
@@ -44,7 +45,8 @@ public final class LMViewModel: ILocationManagerViewModel{
                 activityType: CLActivityType? = nil,
                 distanceFilter: CLLocationDistance? = nil,
                 backgroundUpdates : Bool = false){
-        manager = LocationManagerAsync(accuracy, activityType, distanceFilter, backgroundUpdates)
+        
+        manager = .init(accuracy, activityType, distanceFilter, backgroundUpdates)
     }
     
     deinit{
