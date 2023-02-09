@@ -98,7 +98,7 @@ public protocol ILocationManagerViewModel: ObservableObject{
 
 if you are using the simulator don't forget to simulate locations
 
- ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image3.gif)
+ ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image8.gif)
  
  Available on watchOs
  
