@@ -100,7 +100,7 @@ if you are using the simulator don't forget to simulate locations
 
  ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image8.gif)
  
- Available on watchOs
+ Available for watchOS
  
  ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image5.gif)
  
