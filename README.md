@@ -5,7 +5,7 @@
 - [x] Using new concurrency swift model around CoreLocation manager
 - [x] Customizable in terms of CLLocationManager properties
 - [x] Streaming current locations asynchronously
-- [x] Support for iOS from 14.1 and watchOS
+- [x] Support for iOS from 14.1 and watchOS from 7.0
 - [x] Errors handling (as **AsyncLocationErrors** so CoreLocation errors **CLError**)
 
 ## How to use
