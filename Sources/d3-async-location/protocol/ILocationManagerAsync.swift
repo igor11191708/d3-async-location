@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-@available(iOS 15.0, watchOS 7.0, *)
+@available(iOS 14.0, watchOS 7.0, *)
 protocol ILocationManagerAsync{
     
     /// Check status and get stream of async data

@@ -11,15 +11,14 @@ extension LocationManagerAsync{
     
     /// The methods that you use to receive events from an associated location-manager object
     /// The location manager calls its delegate’s methods to report location-related events to your app.
-    @available(iOS 15.0, watchOS 7.0, *)
+    @available(iOS 14.0, watchOS 7.0, *)
     final class Delegate: NSObject, CLLocationManagerDelegate{
         
         /// Continuation asynchronously passing location data
         var stream: Streaming?{
             didSet {
-                stream?.onTermination = { @Sendable termination in
-                    self.onTermination(termination)
-                    
+                stream?.onTermination = { @Sendable [weak self] termination in
+                    self?.onTermination(termination)
                 }
             }
         }

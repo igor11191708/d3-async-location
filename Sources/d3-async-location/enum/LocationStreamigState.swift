@@ -8,7 +8,7 @@
 import Foundation
 
 /// Streaming states
-@available(iOS 15.0, watchOS 7.0, *)
+@available(iOS 14.0, watchOS 7.0, *)
 enum LocationStreamingState{
     
     /// not streaming

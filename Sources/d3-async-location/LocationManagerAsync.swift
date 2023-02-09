@@ -8,7 +8,7 @@
 import CoreLocation
 
 ///Location manager streaming data asynchronously via instance of `AsyncThrowingStream` returning from ``start`` asking permission in advance if it's not determined.
-@available(iOS 15.0, watchOS 7.0, *)
+@available(iOS 14.0, watchOS 7.0, *)
 final class LocationManagerAsync: ILocationManagerAsync{
     
     // MARK: - Private properties

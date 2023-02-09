@@ -8,7 +8,7 @@
 import CoreLocation
 
 /// Async locations manager errors
-@available(iOS 15.0, watchOS 7.0, *)
+@available(iOS 14.0, watchOS 7.0, *)
 public enum AsyncLocationErrors: Error{
    
     ///Access was denied by  user

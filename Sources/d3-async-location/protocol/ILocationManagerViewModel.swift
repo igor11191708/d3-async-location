@@ -8,7 +8,7 @@
 import CoreLocation
 import SwiftUI
 
-@available(iOS 15.0, watchOS 7.0, *)
+@available(iOS 14.0, watchOS 7.0, *)
 public protocol ILocationManagerViewModel: ObservableObject{
         
     /// List of locations
