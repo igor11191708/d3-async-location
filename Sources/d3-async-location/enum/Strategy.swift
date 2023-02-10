@@ -15,6 +15,7 @@ public extension LMViewModel{
          
         case keepAll
          
+         /// **Default value**
         case keepLast
          
          /// Check if the strategy keep all streamed values

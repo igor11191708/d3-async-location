@@ -67,8 +67,8 @@ public protocol ILocationManagerViewModel: ObservableObject{
     @MainActor
     var locations : [CLLocation] { get }
     
-    /// Strategy for publishing locations Default value is .keepAll 
-    /// .keepLast is an option
+    /// Strategy for publishing locations Default value is .keepLast 
+    /// .keepAll is an option
     var strategy : LMViewModel.Strategy { get }
     
     /// Start streaming locations
@@ -83,7 +83,7 @@ public protocol ILocationManagerViewModel: ObservableObject{
 
 |Param|Description|
 | --- | --- |
-|strategy| Strategy for publishing locations Default value is **.keepAll** The other options is **.keepLast** |
+|strategy| Strategy for publishing locations Default value is **.keepLast** The other options is **.keepAll** |
 |accuracy| The accuracy of a geographical coordinate.|
 |activityType|Constants indicating the type of activity associated with location updates.|
 |distanceFilter|A distance in meters from an existing location.|

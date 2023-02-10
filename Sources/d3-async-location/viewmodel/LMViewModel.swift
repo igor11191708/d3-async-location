@@ -17,7 +17,7 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     // MARK: - Public
     
-    /// Strategy for publishing locations Default value is .keepAll
+    /// Strategy for publishing locations Default value is .keepLast
     public let strategy : Strategy
     
     /// List of locations Subscribe different Views to locations publisher to feed them
@@ -40,7 +40,7 @@ public final class LMViewModel: ILocationManagerViewModel{
     // MARK: - Life circle
 
     /// - Parameters:
-    ///   - strategy: Strategy for publishing locations Default value is .keepAll
+    ///   - strategy: Strategy for publishing locations Default value is .keepLast
     ///   - accuracy: The accuracy of a geographical coordinate.
     ///   - activityType: Constants indicating the type of activity associated with location updates.
     ///   - distanceFilter: A distance in meters from an existing location.
