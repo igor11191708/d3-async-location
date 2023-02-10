@@ -17,6 +17,9 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     // MARK: - Public
     
+    /// Strategy for publishing locations Default value is .keepAll
+    public let strategy : Strategy
+    
     /// List of locations Subscribe different Views to locations publisher to feed them
     /// or create a proxy to manipulate with the flow like filtering, dropping, mapping etc
     @MainActor @Published public private(set) var locations : [CLLocation] = []
@@ -37,15 +40,20 @@ public final class LMViewModel: ILocationManagerViewModel{
     // MARK: - Life circle
 
     /// - Parameters:
+    ///   - strategy: Strategy for publishing locations Default value is .keepAll
     ///   - accuracy: The accuracy of a geographical coordinate.
     ///   - activityType: Constants indicating the type of activity associated with location updates.
     ///   - distanceFilter: A distance in meters from an existing location.
     ///   - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
-    public init(accuracy : CLLocationAccuracy? = nil,
+    public init(
+                strategy : Strategy = .keepLast,
+                accuracy : CLLocationAccuracy? = nil,
                 activityType: CLActivityType? = nil,
                 distanceFilter: CLLocationDistance? = nil,
                 backgroundUpdates : Bool = false){
         
+        self.strategy = strategy
+                    
         manager = .init(accuracy, activityType, distanceFilter, backgroundUpdates)
     }
     
@@ -96,7 +104,11 @@ public final class LMViewModel: ILocationManagerViewModel{
     /// - Parameter coordinate: data
     @MainActor
     private func add(_ coordinate : CLLocation) {
-        locations.append(coordinate)
+        if strategy.isKeepAll || locations.isEmpty{
+            locations.append(coordinate)
+        }else if strategy.isKeepLast{
+            locations[0] = coordinate            
+        }
     }
         
     /// Set state

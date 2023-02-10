@@ -67,6 +67,10 @@ public protocol ILocationManagerViewModel: ObservableObject{
     @MainActor
     var locations : [CLLocation] { get }
     
+    /// Strategy for publishing locations Default value is .keepAll 
+    /// .keepLast is optional
+    var strategy : LMViewModel.Strategy { get }
+    
     /// Start streaming locations
     func start() async throws
     
