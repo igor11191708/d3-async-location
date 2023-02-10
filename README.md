@@ -5,7 +5,7 @@
 - [x] Using new concurrency swift model around CoreLocation manager
 - [x] Customizable in terms of CLLocationManager properties
 - [x] Streaming current location asynchronously
-- [x] Keep and publish all locations or the last one since streaming has started
+- [x] Keep and publish all stack of locations since streaming has started or the last one
 - [x] Support for iOS from 14.1 and watchOS from 7.0
 - [x] Errors handling (as **AsyncLocationErrors** so CoreLocation errors **CLError**)
 
