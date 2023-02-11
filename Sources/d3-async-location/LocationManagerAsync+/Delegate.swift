@@ -23,7 +23,7 @@ extension LocationManagerAsync{
             }
         }
         
-        // MARK: - Delegate
+        // MARK: - API
         
         /// Set stream
         /// - Parameter continuation: Continuation passing location data
@@ -35,6 +35,9 @@ extension LocationManagerAsync{
         public func finish(){
             stream?.finish()
         }
+        
+        // MARK: - Delegate
+
         
         /// Pass `CLLocation` into the async stream
         /// - Parameters:
