@@ -78,7 +78,7 @@ final class LocationManagerAsync: ILocationManagerAsync{
     
     /// Start updating
     private func streaming(with continuation : Streaming){
-        delegate.stream = continuation
+        delegate.setStream(with: continuation)
         manager.startUpdatingLocation()
     }
     

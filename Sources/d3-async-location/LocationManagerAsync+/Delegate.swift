@@ -14,8 +14,8 @@ extension LocationManagerAsync{
     @available(iOS 14.0, watchOS 7.0, *)
     final class Delegate: NSObject, CLLocationManagerDelegate{
         
-        /// Continuation asynchronously passing location data
-        var stream: Streaming?{
+        /// Continuation passing location data
+        private var stream: Streaming?{
             didSet {
                 stream?.onTermination = { @Sendable [weak self] termination in
                     self?.onTermination(termination)
@@ -25,6 +25,11 @@ extension LocationManagerAsync{
         
         // MARK: - Delegate
         
+        /// Set stream
+        /// - Parameter continuation: Continuation passing location data
+        public func setStream(with continuation : Streaming){
+            stream = continuation
+        }
         
         /// Stop streaming
         public func finish(){
