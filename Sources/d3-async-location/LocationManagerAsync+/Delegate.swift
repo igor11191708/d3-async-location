@@ -68,10 +68,10 @@ extension LocationManagerAsync{
         private func onTermination(_ termination: Termination){
             let type = AsyncLocationErrors.self
             switch(termination){
-            case .finished(_) : fallthrough
-            case .cancelled: stream?.finish(throwing: type.streamCanceled)
-            @unknown default:
-                stream?.finish(throwing: type.streamUnknownTermination)
+                case .finished(_) : fallthrough
+                case .cancelled: stream?.finish(throwing: type.streamCanceled)
+                @unknown default:
+                    stream?.finish(throwing: type.streamUnknownTermination)
             }
             
             stream = nil
