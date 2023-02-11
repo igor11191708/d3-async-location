@@ -64,7 +64,7 @@ final class LocationManagerAsync: ILocationManagerAsync{
     
     /// Stop streaming
     public func stop(){
-        delegate.stream = nil
+        delegate.finish()
         manager.stopUpdatingLocation()
         
         #if DEBUG

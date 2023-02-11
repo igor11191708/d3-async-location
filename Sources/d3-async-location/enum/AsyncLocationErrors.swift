@@ -19,8 +19,11 @@ public enum AsyncLocationErrors: Error{
     case streamingProcessHasAlreadyStarted
     
     /// Stream was cancelled or terminated
-    case streamTerminated
+    case streamCanceled
 
+    /// Stream was cancelled or terminated
+    case streamUnknownTermination
+    
     /// A Core Location error
     case coreLocationManagerError(CLError)
     

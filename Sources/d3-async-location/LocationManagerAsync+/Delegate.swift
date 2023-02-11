@@ -25,6 +25,12 @@ extension LocationManagerAsync{
         
         // MARK: - Delegate
         
+        
+        /// Stop streaming
+        public func finish(){
+            stream?.finish()
+        }
+        
         /// Pass `CLLocation` into the async stream
         /// - Parameters:
         ///   - manager: Location manager
@@ -61,7 +67,14 @@ extension LocationManagerAsync{
         /// - Parameter termination: A type that indicates how the stream terminated.
         private func onTermination(_ termination: Termination){
             let type = AsyncLocationErrors.self
-            stream?.finish(throwing: type.streamTerminated)
+            switch(termination){
+            case .finished(_) : fallthrough
+            case .cancelled: stream?.finish(throwing: type.streamCanceled)
+            @unknown default:
+                stream?.finish(throwing: type.streamUnknownTermination)
+            }
+            
+            stream = nil
          }
         
         /// Passing ``CLLocation`` data

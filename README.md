@@ -51,9 +51,12 @@ If task will be canceled the streaming stops automatically. I would recommend to
     /// Subscribe different Views to LMViewModel.locations publisher to feed them
     case streamingProcessHasAlreadyStarted
     
-    /// Stream was cancelled or terminated
-    case streamTerminated
+    /// Stream was cancelled
+    case streamCanceled
 
+    /// Stream was terminated
+    case streamUnknownTermination
+    
     /// A Core Location error
     case coreLocationManagerError(CLError)
 ```
