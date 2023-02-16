@@ -13,6 +13,7 @@ extension LocationManagerAsync{
     
     /// Helper class to determine permission to get access for streaming ``CLLocation``
     @available(iOS 14.0, watchOS 7.0, *)
+
     final class Permission{
         
         /// Name of notification for event location manager changed authorization status
@@ -41,6 +42,12 @@ extension LocationManagerAsync{
         init(with status: CLAuthorizationStatus){
             self.status = status
             initSubscription()
+        }
+        
+        /// resume continuation if it was not called
+        deinit {
+            flow?.resume(returning: .notDetermined)
+            flow = nil
         }
 
         // MARK: - API
