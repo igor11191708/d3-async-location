@@ -42,7 +42,7 @@ extension LocationManagerAsync{
             self.status = status
             initSubscription()
         }
-        
+
         // MARK: - API
         
         /// Get status asynchronously and check is it authorized to start getting the stream of locations
@@ -71,6 +71,7 @@ extension LocationManagerAsync{
             if let s = value.object as? CLAuthorizationStatus{
                 status = s
                 flow?.resume(returning: status)
+                flow = nil
             }
         }
         
