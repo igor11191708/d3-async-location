@@ -44,10 +44,9 @@ extension LocationManagerAsync{
             initSubscription()
         }
         
-        /// resume continuation if it was not called
+        /// resume continuation if it was not called with status .notDetermined
         deinit {
-            flow?.resume(returning: .notDetermined)
-            flow = nil
+            resume(with: .notDetermined)
         }
 
         // MARK: - API
@@ -61,7 +60,6 @@ extension LocationManagerAsync{
         }
         
         // MARK: - Private methods
-        
         
         /// Subscribe for event when location manager change authorization status to go on access permission flow
         private func initSubscription(){
@@ -77,9 +75,15 @@ extension LocationManagerAsync{
         private func statusChanged(_ value: Output) {
             if let s = value.object as? CLAuthorizationStatus{
                 status = s
-                flow?.resume(returning: status)
-                flow = nil
+                resume(with: status)
             }
+        }
+                
+        /// Resume continuation
+        /// - Parameter status: resume
+        private func resume(with status : CLAuthorizationStatus) {
+            flow?.resume(returning: status)
+            flow = nil
         }
         
         /// Requests the user’s permission to use location services while the app is in use
