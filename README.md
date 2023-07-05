@@ -104,6 +104,8 @@ public protocol ILocationManagerViewModel: ObservableObject{
 |distanceFilter|A distance in meters from an existing location.|
 |backgroundUpdates|A Boolean value that indicates whether the app receives location updates when running in the background|
 
+or
+
 |Param|Description|
 | --- | --- |
 |strategy| Strategy for publishing locations Default value is **.keepLast** The other option is **.keepAll** |
