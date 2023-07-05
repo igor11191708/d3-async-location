@@ -104,6 +104,12 @@ public protocol ILocationManagerViewModel: ObservableObject{
 |distanceFilter|A distance in meters from an existing location.|
 |backgroundUpdates|A Boolean value that indicates whether the app receives location updates when running in the background|
 
+|Param|Description|
+| --- | --- |
+|strategy| Strategy for publishing locations Default value is **.keepLast** The other option is **.keepAll** |
+|delegate| Custom delegate|
+
+
 ### Default location
 1. Product > Scheme > Edit Scheme
 2. Click Run .app
