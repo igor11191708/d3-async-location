@@ -57,6 +57,18 @@ public final class LMViewModel: ILocationManagerViewModel{
         manager = .init(accuracy, activityType, distanceFilter, backgroundUpdates)
     }
     
+    /// - Parameters:
+    ///   - strategy: Strategy for publishing locations Default value is .keepLast
+    ///   - delegate: Custom delegate
+    public init(
+                strategy : Strategy = .keepLast,
+                delegate : ILocationDelegate){
+        
+        self.strategy = strategy
+                    
+       manager = .init(with: delegate)
+    }
+    
     deinit{
         #if DEBUG
         print("deinit LMViewModel")

@@ -12,10 +12,10 @@ extension LocationManagerAsync{
     /// The methods that you use to receive events from an associated location-manager object
     /// The location manager calls its delegate’s methods to report location-related events to your app.
     @available(iOS 14.0, watchOS 7.0, *)
-    final class Delegate: NSObject, CLLocationManagerDelegate{
+    final class Delegate: NSObject, ILocationDelegate{
         
         /// Continuation passing location data
-        private var stream: Streaming?{
+        public var stream: Streaming?{
             didSet {
                 stream?.onTermination = { @Sendable [weak self] termination in
                     self?.onTermination(termination)
@@ -23,21 +23,7 @@ extension LocationManagerAsync{
             }
         }
         
-        // MARK: - API
-        
-        /// Set stream
-        /// - Parameter continuation: Continuation passing location data
-        public func setStream(with continuation : Streaming){
-            stream = continuation
-        }
-        
-        /// Stop streaming
-        public func finish(){
-            stream?.finish()
-        }
-        
         // MARK: - Delegate
-
         
         /// Pass `CLLocation` into the async stream
         /// - Parameters:
@@ -52,7 +38,6 @@ extension LocationManagerAsync{
         public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
             NotificationCenter.default.post(name: Permission.authorizationStatus, object: manager.authorizationStatus)
         }
-        
         
         /// Tells the delegate that the location manager was unable to retrieve a location value
         /// - Parameters:

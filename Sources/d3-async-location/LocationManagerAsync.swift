@@ -17,13 +17,13 @@ final class LocationManagerAsync: ILocationManagerAsync{
     private let manager = CLLocationManager()
     
     /// Delegate
-    private let delegate = Delegate()
+    private let delegate: ILocationDelegate
     
     // Streaming locations
     
     /// Async stream of ``CLLocation``
-    private var locations : AsyncThrowingStream<CLLocation, Error>{
-        .init(CLLocation.self) { continuation in
+    private var locations : AsyncThrowingStream<CLLocation, Error> {
+        AsyncThrowingStream<CLLocation, Error>(CLLocation.self) { continuation in
             streaming(with: continuation)
         }
     }
@@ -40,9 +40,16 @@ final class LocationManagerAsync: ILocationManagerAsync{
          _ distanceFilter: CLLocationDistance?,
          _ backgroundUpdates : Bool = false){
         
+        self.delegate = LocationManagerAsync.Delegate()
+        
         updateSettings(accuracy, activityType, distanceFilter, backgroundUpdates)
     }
     
+    /// - Parameter delegate: Custom delegate
+    init(with delegate : ILocationDelegate){
+        self.delegate = delegate
+        manager.delegate = delegate
+    }
     
     // MARK: - API
     
@@ -58,7 +65,6 @@ final class LocationManagerAsync: ILocationManagerAsync{
             #endif
             
             return locations
-            
         }
     }
     
