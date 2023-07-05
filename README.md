@@ -109,7 +109,7 @@ or
 |Param|Description|
 | --- | --- |
 |strategy| Strategy for publishing locations Default value is **.keepLast** The other option is **.keepAll** |
-|delegate| Custom delegate|
+|delegate| Custom delegate conforming to **ILocationDelegate**|
 
 
 ### Default location
