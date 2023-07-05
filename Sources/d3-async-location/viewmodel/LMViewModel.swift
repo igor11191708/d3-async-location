@@ -33,8 +33,9 @@ public final class LMViewModel: ILocationManagerViewModel{
     private var state : LocationStreamingState = .idle
     
     /// Check if streaming is idle
+    @MainActor
     private var isIdle: Bool{
-        state == .idle
+        return state == .idle
     }
        
     // MARK: - Life circle
@@ -79,8 +80,7 @@ public final class LMViewModel: ILocationManagerViewModel{
     
     /// Start streaming locations
     public func start() async throws{
-        
-        guard isIdle else{
+        guard await isIdle else{
             throw AsyncLocationErrors.streamingProcessHasAlreadyStarted
         }
         
