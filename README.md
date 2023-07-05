@@ -13,7 +13,7 @@ if you are using the simulator don't forget to simulate locations
 
  ## Features
 - [x] Using new concurrency swift model around CoreLocation manager
-- [x] Customizable in terms of passing your custom CLLocationManagerDelegate
+- [x] Customizable in terms of passing a custom delegate(CLLocationManagerDelegate) conforming to **ILocationDelegate** protocol
 - [x] Customizable in terms of CLLocationManager properties
 - [x] Streaming current location asynchronously
 - [x] Different strategies - Keep and publish all stack of locations since streaming has started or the last one
