@@ -105,6 +105,8 @@ final class LocationManagerAsync: ILocationManagerAsync{
         manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
         manager.activityType = activityType ?? .other
         manager.distanceFilter = distanceFilter ?? kCLDistanceFilterNone
+        #if !os(visionOS)
         manager.allowsBackgroundLocationUpdates = backgroundUpdates
+        #endif
     }
 }
