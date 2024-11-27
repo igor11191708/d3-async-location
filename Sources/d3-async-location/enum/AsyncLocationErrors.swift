@@ -28,3 +28,26 @@ public enum AsyncLocationErrors: Error{
     case coreLocationManagerError(CLError)
     
 }
+
+
+@available(iOS 14.0, watchOS 7.0, *)
+extension AsyncLocationErrors: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .accessIsNotAuthorized:
+            return NSLocalizedString("Access was denied by the user.", comment: "")
+
+        case .streamingProcessHasAlreadyStarted:
+            return NSLocalizedString("Attempted to start streaming while it's already running.", comment: "")
+
+        case .streamCanceled:
+            return NSLocalizedString("The stream was cancelled or terminated.", comment: "")
+
+        case .streamUnknownTermination:
+            return NSLocalizedString("The stream was cancelled or terminated due to an unknown error.", comment: "")
+
+        case .coreLocationManagerError(let error):
+            return error.localizedDescription
+        }
+    }
+}
