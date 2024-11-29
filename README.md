@@ -2,14 +2,14 @@
 
 Async pattern using new concurrency model in **swift** that can be applied to Core Bluetooth, Core Motion and others sources streaming data asynchronously
 
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Figor11191708%2Fd3-async-location%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/igor11191708/d3-async-location)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftuiux%2Fd3-async-location%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/swiftuiux/d3-async-location)
 
 ## SwiftUI example of using package
-[async-location-swift-example](https://github.com/The-Igor/async-location-swift-example)
+[async-location-swift-example](https://github.com/swiftuiux/async-location-swift-example)
 
 if you are using the simulator don't forget to simulate locations
 
- ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image11.gif)
+ ![simulate locations](https://github.com/swiftuiux/d3-async-location/blob/main/img/image11.gif)
 
  ## Features
 - [x] Using new concurrency swift model around CoreLocation manager
@@ -23,7 +23,7 @@ if you are using the simulator don't forget to simulate locations
 ## How to use
  
 ### 1. Add to info the option "Privacy - Location When In Use Usage Description" 
- ![Add to info](https://github.com/The-Igor/d3-async-location/blob/main/img/image2.png)
+ ![Add to info](https://github.com/swiftuiux/d3-async-location/blob/main/img/image2.png)
  
 ### 2. Add or inject LMViewModel into a View
 
@@ -119,11 +119,11 @@ or
 4. Already checked Core Location > select your location
 5. Press OK
 
- ![Default location](https://github.com/The-Igor/d3-async-location/blob/main/img/image6.png)
+ ![Default location](https://github.com/swiftuiux/d3-async-location/blob/main/img/image6.png)
  
  Available for watchOS
  
- ![simulate locations](https://github.com/The-Igor/d3-async-location/blob/main/img/image5.gif)
+ ![simulate locations](https://github.com/swiftuiux/d3-async-location/blob/main/img/image5.gif)
  
 ## Documentation(API)
 - You need to have Xcode 13 installed in order to have access to Documentation Compiler (DocC)
