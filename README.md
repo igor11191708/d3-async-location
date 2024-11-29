@@ -5,7 +5,7 @@ Async pattern using new concurrency model in **swift** that can be applied to Co
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftuiux%2Fd3-async-location%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/swiftuiux/d3-async-location)
 
 ## SwiftUI example of using package
-[async-location-swift-example](https://github.com/swiftuiux/async-location-swift-example)
+[async-location-swift-example](https://github.com/swiftuiux/corelocation-manager-tracker-swift-apple-maps-example)
 
 if you are using the simulator don't forget to simulate locations
 
