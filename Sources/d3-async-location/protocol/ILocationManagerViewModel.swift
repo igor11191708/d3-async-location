@@ -9,10 +9,10 @@ import CoreLocation
 import SwiftUI
 
 @available(iOS 14.0, watchOS 7.0, *)
+@MainActor
 public protocol ILocationManagerViewModel: ObservableObject{
         
     /// List of locations
-    @MainActor
     var results : [LMViewModel.Output] { get }
     
     /// Strategy for publishing locations Default value is .keepLast
