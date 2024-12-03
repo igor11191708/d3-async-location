@@ -9,7 +9,7 @@ Async pattern using new concurrency model in **swift** that can be applied to Co
 
 if you are using the simulator don't forget to simulate locations
 
- ![simulate locations](https://github.com/swiftuiux/d3-async-location/blob/main/img/image11.gif)
+ ![simulate locations](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/image11.gif)
 
  ## Features
 - [x] Using new concurrency swift model around CoreLocation manager
@@ -24,7 +24,7 @@ if you are using the simulator don't forget to simulate locations
 ## How to use
  
 ### 1. Add to info the option "Privacy - Location When In Use Usage Description" 
- ![Add to info](https://github.com/swiftuiux/d3-async-location/blob/main/img/image2.png)
+ ![Add to info](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/image2.png)
  
  **Background Updates**
    - Ensure the app has `location` included in `UIBackgroundModes` for background updates to function.
@@ -69,11 +69,11 @@ or
 4. Already checked Core Location > select your location
 5. Press OK
 
- ![Default location](https://github.com/swiftuiux/d3-async-location/blob/main/img/image6.png)
+ ![Default location](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/image6.png)
  
  Available for watchOS
  
- ![simulate locations](https://github.com/swiftuiux/d3-async-location/blob/main/img/image5.gif)
+ ![simulate locations](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/image5.gif)
  
 ## Documentation(API)
 - You need to have Xcode 13 installed in order to have access to Documentation Compiler (DocC)
