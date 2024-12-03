@@ -13,7 +13,7 @@ if you are using the simulator don't forget to simulate locations
 
  ## Features
 - [x] Using new concurrency swift model around CoreLocation manager
-- [x] Customizable in terms of passing a preconfigured CLLocationManager
+- [x] Extend API to allow customization of `CLLocationManager`
 - [x] Customizable in terms of CLLocationManager properties
 - [x] Streaming current location asynchronously
 - [x] Different strategies - Keep and publish all stack of locations since streaming has started or the last one
@@ -24,6 +24,9 @@ if you are using the simulator don't forget to simulate locations
  
 ### 1. Add to info the option "Privacy - Location When In Use Usage Description" 
  ![Add to info](https://github.com/swiftuiux/d3-async-location/blob/main/img/image2.png)
+ 
+ **Background Updates**
+   - Ensure the app has `location` included in `UIBackgroundModes` for background updates to function.
  
 ### 2. Add or inject LocationStreamer into a View
 
