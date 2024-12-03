@@ -14,11 +14,12 @@ if you are using the simulator don't forget to simulate locations
  ## Features
 - [x] Using new concurrency swift model around CoreLocation manager
 - [x] Extend API to allow customization of `CLLocationManager`
-- [x] Customizable in terms of CLLocationManager properties
+- [x] Support for iOS from 14.1 and watchOS from 7.0
+- [x] Seamless SwiftUI Integration Uses `@Published` properties for real-time UI updates or @observable is you can afford iOS17 or newer.
 - [x] Streaming current location asynchronously
 - [x] Different strategies - Keep and publish all stack of locations since streaming has started or the last one
-- [x] Support for iOS from 14.1 and watchOS from 7.0
 - [x] Errors handling (as **AsyncLocationErrors** so CoreLocation errors **CLError**)
+
 
 ## How to use
  
