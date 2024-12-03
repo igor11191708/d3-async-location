@@ -32,7 +32,9 @@ if you are using the simulator don't forget to simulate locations
 ```
 
 ### 3. Call ViewModel method start() within async environment or check SwiftUI example
-
+```
+    try await viewModel.start()
+```
 
 ### LMViewModel Parameters
 
