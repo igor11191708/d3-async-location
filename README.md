@@ -33,6 +33,10 @@ if you are using the simulator don't forget to simulate locations
 ```
     @EnvironmentObject var service: LocationStreamer 
 ```
+For iOS 17+ and watchOS 10+, using @State macro:
+```
+@State var service: ObservableLocationStreamer
+```
 
 ### 3. Call LocationStreamer method start() within async environment or check SwiftUI example
 ```

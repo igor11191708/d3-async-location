@@ -1,5 +1,5 @@
 //
-//  LocationStreamer.swift
+//  ObservableLocationStreamer.swift
 //
 //
 //  Created by Igor on 03.02.2023.
@@ -8,14 +8,12 @@
 import SwiftUI
 import CoreLocation
 
+#if compiler(>=5.9) && canImport(Observation)
+
 /// ViewModel for asynchronously posting location updates.
-/// Add or inject `LocationStreamer` into a View:
-/// ```
-/// @EnvironmentObject var model: LocationStreamer
-/// ```
-/// Use the `start()` method within an async environment to start an asynchronous stream of updates.
-@available(iOS 14.0, watchOS 7.0, *)
-public final class LocationStreamer: ILocationManagerViewModel, ObservableObject{
+@available(iOS 17.0, watchOS 10.0, *)
+@Observable
+public final class ObservableLocationStreamer: ILocationManagerViewModel{
     
     /// Represents the output of the location manager.
     /// Contains either a list of results (e.g., `CLLocation` objects) or a `CLError` in case of failure.
@@ -24,16 +22,16 @@ public final class LocationStreamer: ILocationManagerViewModel, ObservableObject
     // MARK: - Public Properties
     
     /// Strategy for publishing updates. Default value is `.keepLast`.
-    public let strategy: Strategy
+    public let strategy: LocationStreamer.Strategy
     
     /// A list of results published for subscribed Views.
     /// Results may include various types of data (e.g., `CLLocation` objects) depending on the implementation.
     /// Use this publisher to feed Views with updates or create a proxy to manipulate the flow,
     /// such as filtering, mapping, or dropping results.
-    @MainActor @Published public private(set) var results: [Output] = []
+    @MainActor public private(set) var results: [Output] = []
     
     /// Current streaming state of the ViewModel.
-    @MainActor @Published public private(set) var state: LocationStreamingState = .idle
+    @MainActor public private(set) var state: LocationStreamingState = .idle
             
     // MARK: - Private Properties
     
@@ -56,7 +54,7 @@ public final class LocationStreamer: ILocationManagerViewModel, ObservableObject
     ///   - distanceFilter: The minimum distance (in meters) to trigger location updates.
     ///   - backgroundUpdates: Indicates whether the app receives location updates when running in the background.
     public init(
-        strategy: Strategy = .keepLast,
+        strategy: LocationStreamer.Strategy = .keepLast,
         accuracy: CLLocationAccuracy? = kCLLocationAccuracyBest,
         activityType: CLActivityType? = nil,
         distanceFilter: CLLocationDistance? = nil,
@@ -71,7 +69,7 @@ public final class LocationStreamer: ILocationManagerViewModel, ObservableObject
     ///   - strategy: The strategy for publishing location updates. Defaults to `.keepLast`, which retains only the most recent update.
     ///   - locationManager: A pre-configured `CLLocationManager` instance used to manage location updates.
     public init(
-        strategy: Strategy = .keepLast,
+        strategy: LocationStreamer.Strategy = .keepLast,
         locationManager: CLLocationManager
     ) {
         self.strategy = strategy
@@ -140,3 +138,5 @@ public final class LocationStreamer: ILocationManagerViewModel, ObservableObject
         state = value
     }
 }
+
+#endif
