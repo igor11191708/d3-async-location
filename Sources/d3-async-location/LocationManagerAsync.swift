@@ -50,14 +50,14 @@ final class LocationManagerAsync: ILocationManagerAsync {
     /// Checks permission status and starts streaming location data asynchronously.
     /// - Returns: An `AsyncStream` emitting location updates or errors.
     /// - Throws: An error if permission is not granted.
-    public func start() async throws -> AsyncStream<LMViewModel.Output> {
+    public func start() async throws -> AsyncStream<LocationStreamer.Output> {
         try await delegate.permission()
         
         #if DEBUG
         print("start")
         #endif
             
-        let (stream, continuation) = AsyncStream.makeStream(of: LMViewModel.Output.self)
+        let (stream, continuation) = AsyncStream.makeStream(of: LocationStreamer.Output.self)
         delegate.continuation = continuation
         
         return stream

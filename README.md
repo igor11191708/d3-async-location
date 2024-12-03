@@ -25,18 +25,18 @@ if you are using the simulator don't forget to simulate locations
 ### 1. Add to info the option "Privacy - Location When In Use Usage Description" 
  ![Add to info](https://github.com/swiftuiux/d3-async-location/blob/main/img/image2.png)
  
-### 2. Add or inject LMViewModel into a View
+### 2. Add or inject LocationStreamer into a View
 
 ```
-    @EnvironmentObject var model: LMViewModel 
+    @EnvironmentObject var service: LocationStreamer 
 ```
 
-### 3. Call ViewModel method start() within async environment or check SwiftUI example
+### 3. Call LocationStreamer method start() within async environment or check SwiftUI example
 ```
-    try await viewModel.start()
+    try await service.start()
 ```
 
-### LMViewModel Parameters
+### LocationStreamer parameters
 
 |Param|Description|
 | --- | --- |

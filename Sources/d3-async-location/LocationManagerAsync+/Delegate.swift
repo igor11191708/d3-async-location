@@ -19,7 +19,7 @@ extension LocationManagerAsync {
         
         /// The continuation used to emit location updates or errors into the `AsyncStream`.
         /// When set, starts location updates and sets up termination handling.
-        public var continuation: AsyncStream<LMViewModel.Output>.Continuation? {
+        public var continuation: AsyncStream<LocationStreamer.Output>.Continuation? {
             didSet {
                 continuation?.onTermination = { [weak self] termination in
                     self?.onTermination(termination)
@@ -154,7 +154,7 @@ extension LocationManagerAsync {
         
         /// Passes a location result (success or failure) into the async stream.
         /// - Parameter result: The result containing locations or an error.
-        private func pass(result: LMViewModel.Output) {
+        private func pass(result: LocationStreamer.Output) {
             continuation?.yield(result)
         }
     }
@@ -162,6 +162,6 @@ extension LocationManagerAsync {
     // MARK: - Alias Types -
     
     /// Alias for the termination type used in the async stream.
-    private typealias Termination = AsyncStream<LMViewModel.Output>.Continuation.Termination
+    private typealias Termination = AsyncStream<LocationStreamer.Output>.Continuation.Termination
     
 }

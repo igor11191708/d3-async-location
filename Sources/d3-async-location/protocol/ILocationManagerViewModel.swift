@@ -13,10 +13,10 @@ import SwiftUI
 public protocol ILocationManagerViewModel: ObservableObject{
         
     /// List of locations
-    var results : [LMViewModel.Output] { get }
+    var results : [LocationStreamer.Output] { get }
     
     /// Strategy for publishing locations Default value is .keepLast
-    var strategy : LMViewModel.Strategy { get }
+    var strategy : LocationStreamer.Strategy { get }
     
     /// Start streaming locations
     func start() async throws

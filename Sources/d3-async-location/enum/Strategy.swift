@@ -8,7 +8,7 @@
 import Foundation
 
 @available(iOS 14.0, watchOS 7.0, *)
-public extension LMViewModel{
+public extension LocationStreamer{
     
     /// Strategy for publishing locations
      enum Strategy{

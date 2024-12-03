@@ -11,7 +11,7 @@ import CoreLocation
 @available(iOS 14.0, watchOS 7.0, *)
 public protocol ILocationDelegate: NSObjectProtocol, CLLocationManagerDelegate{
     
-    var continuation: AsyncStream<LMViewModel.Output>.Continuation? {get set}
+    var continuation: AsyncStream<LocationStreamer.Output>.Continuation? {get set}
    
     /// Stop streaming
     func finish()
