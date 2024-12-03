@@ -51,7 +51,7 @@ extension LocationManagerAsync {
         /// Initializes the delegate with a given `CLLocationManager` instance.
         /// - Parameter locationManager: The `CLLocationManager` instance to manage location updates.
         public init(locationManager: CLLocationManager) {
-            manager = CLLocationManager()
+            manager = locationManager
             super.init()
             manager.delegate = self
         }

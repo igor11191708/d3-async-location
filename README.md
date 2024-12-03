@@ -13,7 +13,7 @@ if you are using the simulator don't forget to simulate locations
 
  ## Features
 - [x] Using new concurrency swift model around CoreLocation manager
-- [x] Customizable in terms of passing a custom delegate(CLLocationManagerDelegate) conforming to **ILocationDelegate** protocol
+- [x] Customizable in terms of passing a preconfigured CLLocationManager
 - [x] Customizable in terms of CLLocationManager properties
 - [x] Streaming current location asynchronously
 - [x] Different strategies - Keep and publish all stack of locations since streaming has started or the last one
@@ -31,68 +31,8 @@ if you are using the simulator don't forget to simulate locations
     @EnvironmentObject var model: LMViewModel 
 ```
 
-### 3. Call ViewModel method start() within async environment
-If task will be canceled the streaming stops automatically. I would recommend to use .task modifier it manages cancelation on it's own. If you need to use Task and keep it in @State don't forget to cancel() when the time has come or it might course memory leaks in some cases
-```
- .task{
-       do{
-             try await viewModel.start()
-         }catch{
-             self.error = error.localizedDescription
-         }     
-    }
-```
+### 3. Call ViewModel method start() within async environment or check SwiftUI example
 
-### 4. Bake async stream of data from "locations" into a visual presentation 
-```
-    @ViewBuilder
-    var coordinatesTpl: some View{
-        List(viewModel.locations, id: \.hash) { location in
-            Text("\(location.coordinate.longitude), \(location.coordinate.latitude)")
-        }
-    }
-```
-
-### 5. Showcase error
-```   
-    ///Access was denied by  user
-    case accessIsNotAuthorized
-    
-    /// Attempt to launch streaming while it's been already started
-    /// Subscribe different Views to LMViewModel.locations publisher to feed them
-    case streamingProcessHasAlreadyStarted
-    
-    /// Stream was cancelled
-    case streamCanceled
-
-    /// Stream was terminated
-    case streamUnknownTermination
-    
-    /// A Core Location error
-    case coreLocationManagerError(CLError)
-```
-
-There's been a glitch - throwing **CLError.locationUnknown** *Error Domain=kCLErrorDomain Code=0 "(null)"* on some devices and simulator while changing locations time by time. This type of error *.locationUnknown* is excluded when it happens in the delegate method **didFailWithError**
-
-### LMViewModel API
-```
-public protocol ILocationManagerViewModel: ObservableObject{
-        
-    /// List of locations
-    @MainActor
-    var locations : [CLLocation] { get }
-    
-    /// Strategy for publishing locations Default value is .keepLast 
-    /// .keepAll is an option
-    var strategy : LMViewModel.Strategy { get }
-    
-    /// Start streaming locations
-    func start() async throws
-    
-    /// Stop streaming locations
-    func stop()
-}
-```
 
 ### LMViewModel Parameters
 
@@ -109,7 +49,7 @@ or
 |Param|Description|
 | --- | --- |
 |strategy| Strategy for publishing locations Default value is **.keepLast** The other option is **.keepAll** |
-|delegate| Custom delegate conforming to **ILocationDelegate**|
+|locationManager| Preconfigured CLLocationManager |
 
 
 ### Default location
