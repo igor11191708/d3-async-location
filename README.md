@@ -32,7 +32,7 @@ if you are using the simulator don't forget to simulate locations
 ### 2. Add or inject LocationStreamer into a View
 
 ```
-    @EnvironmentObject var service: LocationStreamer 
+    @StateObject var service: LocationStreamer 
 ```
 For iOS 17+ and watchOS 10+, using @State macro:
 ```
