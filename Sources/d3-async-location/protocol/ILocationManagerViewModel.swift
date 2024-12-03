@@ -10,7 +10,7 @@ import SwiftUI
 
 @available(iOS 14.0, watchOS 7.0, *)
 @MainActor
-public protocol ILocationManagerViewModel: ObservableObject{
+public protocol ILocationManagerViewModel{
         
     /// List of locations
     var results : [LocationStreamer.Output] { get }

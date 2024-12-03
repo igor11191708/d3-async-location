@@ -15,7 +15,7 @@ import CoreLocation
 /// ```
 /// Use the `start()` method within an async environment to start an asynchronous stream of updates.
 @available(iOS 14.0, watchOS 7.0, *)
-public final class LocationStreamer: ILocationManagerViewModel {
+public final class LocationStreamer: ILocationManagerViewModel, ObservableObject{
     
     /// Represents the output of the location manager.
     /// Contains either a list of results (e.g., `CLLocation` objects) or a `CLError` in case of failure.
