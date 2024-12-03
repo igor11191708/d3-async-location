@@ -1,112 +1,75 @@
 //
 //  LocationManagerAsync.swift
 //
-//
 //  Created by Igor on 03.02.2023.
 //
 
 import CoreLocation
 
-///Location manager streaming data asynchronously via instance of `AsyncThrowingStream` returning from ``start`` asking permission in advance if it's not determined.
+/// A location manager that streams data asynchronously using an `AsyncStream`.
+/// It requests permission in advance if it hasn't been determined yet.
+/// Use the `start()` method to begin streaming location updates.
 @available(iOS 14.0, watchOS 7.0, *)
-final class LocationManagerAsync: ILocationManagerAsync{
-    
-    // MARK: - Private properties
-    
-    /// Location manager
-    private let manager = CLLocationManager()
-    
-    /// Delegate
+final class LocationManagerAsync: ILocationManagerAsync {
+   
+    /// The delegate responsible for handling location updates and forwarding them to the async stream.
     private let delegate: ILocationDelegate
     
-    // Streaming locations
+    // MARK: - Lifecycle
     
-    /// Async stream of ``CLLocation``
-    private var locations : AsyncThrowingStream<CLLocation, Error> {
-        AsyncThrowingStream<CLLocation, Error>(CLLocation.self) { continuation in
-            streaming(with: continuation)
-        }
-    }
-    
-    // MARK: - Life circle
-    
+    /// Initializes a new `LocationManagerAsync` instance with the specified settings.
     /// - Parameters:
-    ///   - accuracy: The accuracy of a geographical coordinate.
-    ///   - activityType: Constants indicating the type of activity associated with location updates.
-    ///   - distanceFilter: A distance in meters from an existing location.
-    ///   - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
-    init(_ accuracy : CLLocationAccuracy?,
-         _ activityType: CLActivityType?,
-         _ distanceFilter: CLLocationDistance?,
-         _ backgroundUpdates : Bool = false){
-        
-        self.delegate = LocationManagerAsync.Delegate()
-        
-        updateSettings(accuracy, activityType, distanceFilter, backgroundUpdates)
+    ///   - accuracy: The desired accuracy of the location data.
+    ///   - activityType: The type of user activity associated with the location updates.
+    ///   - distanceFilter: The minimum distance (in meters) that the device must move before an update event is generated.
+    ///   - backgroundUpdates: A Boolean value indicating whether the app should receive location updates when suspended.
+    init(
+        _ accuracy: CLLocationAccuracy?,
+        _ activityType: CLActivityType?,
+        _ distanceFilter: CLLocationDistance?,
+        _ backgroundUpdates: Bool = false
+    ) {
+        delegate = LocationManagerAsync.Delegate(accuracy, activityType, distanceFilter, backgroundUpdates)
     }
     
-    /// - Parameter delegate: Custom delegate
-    init(with delegate : ILocationDelegate){
-        self.delegate = delegate
-        manager.delegate = delegate
+    /// Initializes the `LocationManagerAsync` instance with a specified `CLLocationManager` instance.
+    /// - Parameter locationManager: A pre-configured `CLLocationManager` instance used to manage location updates.
+    public init(locationManager: CLLocationManager) {
+        delegate = LocationManagerAsync.Delegate(locationManager: locationManager)
+    }
+    
+    /// Deinitializes the `LocationManagerAsync` instance, performing any necessary cleanup.
+    deinit {
+        #if DEBUG
+        print("deinit manager")
+        #endif
     }
     
     // MARK: - API
     
-    /// Check status and get stream of async data Throw an error ``AsyncLocationErrors`` if permission is not granted
-    public var start : AsyncThrowingStream<CLLocation, Error>{
-        get async throws {
-            let permission = Permission(with: manager.authorizationStatus)
+    /// Checks permission status and starts streaming location data asynchronously.
+    /// - Returns: An `AsyncStream` emitting location updates or errors.
+    /// - Throws: An error if permission is not granted.
+    public func start() async throws -> AsyncStream<LMViewModel.Output> {
+        try await delegate.permission()
+        
+        #if DEBUG
+        print("start")
+        #endif
             
-            try await permission.grant(for: manager)
-            
-            #if DEBUG
-            print("start")
-            #endif
-            
-            return locations
-        }
+        let (stream, continuation) = AsyncStream.makeStream(of: LMViewModel.Output.self)
+        delegate.continuation = continuation
+        
+        return stream
     }
     
-    /// Stop streaming
-    public func stop(){
+    /// Stops the location streaming process.
+    public func stop() {
         delegate.finish()
-        manager.stopUpdatingLocation()
         
         #if DEBUG
         print("stop updating")
         #endif
     }
-    
-    // MARK: - Private
-    
-    // Streaming locations
-    
-    /// Start updating
-    private func streaming(with continuation : Streaming){
-        delegate.setStream(with: continuation)
-        manager.startUpdatingLocation()
-    }
-    
-    // Helpers
-    
-    /// Set manager's properties
-    /// - Parameters:
-    ///   - accuracy: The accuracy of a geographical coordinate.
-    ///   - activityType: Constants indicating the type of activity associated with location updates.
-    ///   - distanceFilter: A distance in meters from an existing location.
-    ///   - backgroundUpdates: A Boolean value that indicates whether the app receives location updates when running in the background
-    private func updateSettings(_ accuracy : CLLocationAccuracy?,
-                                _ activityType: CLActivityType?,
-                                _ distanceFilter: CLLocationDistance?,
-                                _ backgroundUpdates : Bool = false
-    ){
-        manager.delegate = delegate
-        manager.desiredAccuracy = accuracy ?? kCLLocationAccuracyBest
-        manager.activityType = activityType ?? .other
-        manager.distanceFilter = distanceFilter ?? kCLDistanceFilterNone
-        #if !os(visionOS)
-        manager.allowsBackgroundLocationUpdates = backgroundUpdates
-        #endif
-    }
+
 }

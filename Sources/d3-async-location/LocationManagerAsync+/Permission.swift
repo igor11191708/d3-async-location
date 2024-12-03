@@ -16,7 +16,7 @@ extension LocationManagerAsync{
     final class Permission{
         
         /// Name of notification for event location manager changed authorization status
-        static let authorizationStatus = Notification.Name("authorizationStatus")
+        static public let authorizationStatus = Notification.Name("authorizationStatus")
         
         // MARK: - Private properties
         

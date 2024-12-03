@@ -13,7 +13,7 @@ public protocol ILocationManagerViewModel: ObservableObject{
         
     /// List of locations
     @MainActor
-    var locations : [CLLocation] { get }
+    var results : [LMViewModel.Output] { get }
     
     /// Strategy for publishing locations Default value is .keepLast
     var strategy : LMViewModel.Strategy { get }

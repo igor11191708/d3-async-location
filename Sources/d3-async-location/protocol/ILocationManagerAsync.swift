@@ -9,11 +9,13 @@ import Foundation
 import CoreLocation
 
 @available(iOS 14.0, watchOS 7.0, *)
-protocol ILocationManagerAsync{
+protocol ILocationManagerAsync {
     
-    /// Check status and get stream of async data
-    var start : AsyncThrowingStream<CLLocation, Error> { get async throws }
+    /// Starts the async stream of location updates.
+    /// - Returns: An `AsyncStream` of `Output` that emits location updates or errors.
+    /// - Throws: An error if the streaming cannot be started.
+    func start() async throws -> AsyncStream<LMViewModel.Output>
     
-    /// Stop streaming
+    /// Stops the location streaming process.
     func stop()
 }
