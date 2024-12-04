@@ -46,8 +46,6 @@ For iOS 17+ and watchOS 10+, using @State macro:
 
 ### LocationStreamer parameters
 
-### LocationStreamer Parameters
-
 |Param|Description|
 | --- | --- |
 |strategy| Strategy for publishing locations. Default value is **KeepLastStrategy**. Another predefined option is **KeepAllStrategy**, or you can implement and test your own custom strategy by conforming to the `LocationResultStrategy` protocol. |
