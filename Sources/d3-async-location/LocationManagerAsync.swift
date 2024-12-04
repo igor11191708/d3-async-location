@@ -51,13 +51,11 @@ final class LocationManagerAsync: ILocationManagerAsync {
     /// - Returns: An `AsyncStream` emitting location updates or errors.
     /// - Throws: An error if permission is not granted.
     public func start() async throws -> AsyncStream<LocationStreamer.Output> {
-        try await delegate.permission()
         
-        #if DEBUG
-        print("start")
-        #endif
+        try await delegate.permission()
             
-        let (stream, continuation) = AsyncStream.makeStream(of: LocationStreamer.Output.self)
+        typealias Output = LocationStreamer.Output
+        let (stream, continuation) = AsyncStream<Output>.makeStream(of: Output.self)
         delegate.continuation = continuation
         
         return stream
