@@ -28,6 +28,7 @@ final class AsyncFIFOQueue<Element: Sendable>: @unchecked Sendable {
     /// - Parameter onTermination: An escaping closure to handle termination events.
     /// - Returns: The initialized `AsyncStream<Element>`.
     func initializeQueue(onTermination: @escaping TerminationHandler) -> AsyncStream<Element> {
+        // Return the existing stream if it's already initialized.
         if let existingStream = stream {
             return existingStream
         }
