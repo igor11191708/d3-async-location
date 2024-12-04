@@ -13,7 +13,7 @@ import CoreLocation
 /// ViewModel for asynchronously posting location updates.
 @available(iOS 17.0, watchOS 10.0, *)
 @Observable
-public final class ObservableLocationStreamer: ILocationManagerViewModel{
+public final class ObservableLocationStreamer: ILocationStreamer{
     
     /// Represents the output of the location manager.
     /// Contains either a list of results (e.g., `CLLocation` objects) or a `CLError` in case of failure.
@@ -22,7 +22,7 @@ public final class ObservableLocationStreamer: ILocationManagerViewModel{
     // MARK: - Public Properties
     
     /// Strategy for publishing updates. Default value is `.keepLast`.
-    public let strategy: LocationStreamer.Strategy
+    public let strategy: LocationResultStrategy
     
     /// A list of results published for subscribed Views.
     /// Results may include various types of data (e.g., `CLLocation` objects) depending on the implementation.
@@ -46,15 +46,15 @@ public final class ObservableLocationStreamer: ILocationManagerViewModel{
        
     // MARK: - Lifecycle
 
-    /// Initializes the `ObservableLocationStreamer`.
+    /// Initializes the `LocationStreamer` with configurable parameters.
     /// - Parameters:
-    ///   - strategy: Strategy for publishing updates. Default value is `.keepLast`.
-    ///   - accuracy: The accuracy of geographical coordinates.
-    ///   - activityType: The type of activity associated with location updates.
-    ///   - distanceFilter: The minimum distance (in meters) that the device must move before an update event is generated. kCLDistanceFilterNone (equivalent to -1.0) means updates are sent regardless of the distance traveled. This is a safe default for apps that don’t require filtering updates based on distance.
-    ///   - backgroundUpdates: Indicates whether the app receives location updates when running in the background.
+    ///   - strategy: A `LocationResultStrategy` for managing location results. Defaults to `KeepLastStrategy`.
+    ///   - accuracy: Specifies the desired accuracy of location updates. Defaults to `kCLLocationAccuracyBest`.
+    ///   - activityType: The type of activity for location updates (e.g., automotive, fitness). Defaults to `.other`.
+    ///   - distanceFilter: The minimum distance (in meters) before generating an update. Defaults to `kCLDistanceFilterNone` (no filtering).
+    ///   - backgroundUpdates: Whether the app should continue receiving location updates in the background. Defaults to `false`.
     public init(
-        strategy: LocationStreamer.Strategy = .keepLast,
+        strategy: LocationResultStrategy = KeepLastStrategy(),
         _ accuracy: CLLocationAccuracy? = kCLLocationAccuracyBest,
         _ activityType: CLActivityType? = .other,
         _ distanceFilter: CLLocationDistance? = kCLDistanceFilterNone,
@@ -64,18 +64,19 @@ public final class ObservableLocationStreamer: ILocationManagerViewModel{
         manager = .init(accuracy, activityType, distanceFilter, backgroundUpdates)
     }
     
-    /// Initializes the `LocationManagerAsync` instance with a specified publishing strategy and `CLLocationManager`.
+    /// Initializes the `LocationStreamer` with a pre-configured `CLLocationManager`.
     /// - Parameters:
-    ///   - strategy: The strategy for publishing location updates. Defaults to `.keepLast`, which retains only the most recent update.
-    ///   - locationManager: A pre-configured `CLLocationManager` instance used to manage location updates.
+    ///   - strategy: A `LocationResultStrategy` for managing location results. Defaults to `KeepLastStrategy`.
+    ///   - locationManager: A pre-configured `CLLocationManager` instance.
     public init(
-        strategy: LocationStreamer.Strategy = .keepLast,
+        strategy: LocationResultStrategy = KeepLastStrategy(),
         locationManager: CLLocationManager
     ) {
         self.strategy = strategy
         manager = .init(locationManager: locationManager)
     }
     
+    /// Cleans up resources when the instance is deallocated.
     deinit {
         #if DEBUG
         print("deinit LocationStreamer")
@@ -84,14 +85,14 @@ public final class ObservableLocationStreamer: ILocationManagerViewModel{
     
     // MARK: - API
     
-    /// Starts streaming updates asynchronously.
+    /// Starts streaming location updates asynchronously.
+    /// - Parameters:
+    ///   - clean: Whether to clear previous results before starting. Defaults to `true`.
     /// - Throws: `AsyncLocationErrors.streamingProcessHasAlreadyStarted` if streaming is already active.
-    @MainActor public func start() async throws {
-        if state == .streaming {
-            stop()
-        }
+    @MainActor public func start(clean: Bool = true) async throws {
+        if state == .streaming { stop() }
+        if clean { self.clean() }
         
-        clean()
         setState(.streaming)
         
         let stream = try await manager.start()
@@ -102,7 +103,7 @@ public final class ObservableLocationStreamer: ILocationManagerViewModel{
         setState(.idle)
     }
     
-    /// Stops the streaming process and resets the state to idle.
+    /// Stops the location streaming process and sets the state to idle.
     @MainActor public func stop() {
         manager.stop()
         setState(.idle)
@@ -114,25 +115,22 @@ public final class ObservableLocationStreamer: ILocationManagerViewModel{
     
     // MARK: - Private Methods
     
+    /// Clears all stored results.
     @MainActor
-    private func clean(){
+    private func clean() {
         results = []
     }
     
-    /// Adds a new result to the `results` array based on the publishing strategy.
-    /// - Parameter result: The new result to be added.
+    /// Adds a new location result to the `results` array.
+    /// The behavior depends on the configured `strategy`.
+    /// - Parameter result: The new result to be processed and added.
     @MainActor
     private func add(_ result: Output) {
-        switch strategy {
-        case .keepAll:
-            results.append(result)
-        case .keepLast:
-            results = [result]
-        }
+        results = strategy.process(results: results, newResult: result)
     }
         
-    /// Updates the current state of the ViewModel.
-    /// - Parameter value: The new streaming state to set.
+    /// Updates the streaming state of the ViewModel.
+    /// - Parameter value: The new state to set (e.g., `.idle`, `.streaming`).
     @MainActor
     private func setState(_ value: LocationStreamingState) {
         state = value

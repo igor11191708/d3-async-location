@@ -10,16 +10,16 @@ import SwiftUI
 
 @available(iOS 14.0, watchOS 7.0, *)
 @MainActor
-public protocol ILocationManagerViewModel{
+public protocol ILocationStreamer{
         
     /// List of locations
     var results : [LocationStreamer.Output] { get }
     
     /// Strategy for publishing locations Default value is .keepLast
-    var strategy : LocationStreamer.Strategy { get }
+    var strategy : LocationResultStrategy { get }
     
     /// Start streaming locations
-    func start() async throws
+    func start(clean: Bool) async throws
     
     /// Stop streaming locations
     func stop()
