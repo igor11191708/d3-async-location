@@ -46,20 +46,22 @@ For iOS 17+ and watchOS 10+, using @State macro:
 
 ### LocationStreamer parameters
 
+### LocationStreamer Parameters
+
 |Param|Description|
 | --- | --- |
-|strategy| Strategy for publishing locations Default value is **.keepLast** The other option is **.keepAll** |
+|strategy| Strategy for publishing locations. Default value is **KeepLastStrategy**. Another predefined option is **KeepAllStrategy**, or you can implement and test your own custom strategy by conforming to the `LocationResultStrategy` protocol. |
 |accuracy| The accuracy of a geographical coordinate.|
-|activityType|Constants indicating the type of activity associated with location updates.|
-|distanceFilter|A distance in meters from an existing location.|
-|backgroundUpdates|A Boolean value that indicates whether the app receives location updates when running in the background|
+|activityType| Constants indicating the type of activity associated with location updates.|
+|distanceFilter| A distance in meters from an existing location to trigger updates.|
+|backgroundUpdates| A Boolean value that indicates whether the app receives location updates when running in the background. |
 
 or
 
 |Param|Description|
 | --- | --- |
-|strategy| Strategy for publishing locations Default value is **.keepLast** The other option is **.keepAll** |
-|locationManager| Preconfigured CLLocationManager |
+|strategy| Strategy for publishing locations. Default value is **KeepLastStrategy**. Another predefined option is **KeepAllStrategy**, or you can implement and test your own custom strategy by conforming to the `LocationResultStrategy` protocol. |
+|locationManager| A pre-configured `CLLocationManager`. |
 
 
 ### Default location
