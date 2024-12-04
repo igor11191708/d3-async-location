@@ -1,6 +1,6 @@
 //
-//  Strategy.swift
-//  
+//  LocationResultStrategy.swift
+//
 //
 //  Created by Igor Shelopaev on 10.02.2023.
 //
