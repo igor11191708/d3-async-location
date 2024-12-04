@@ -7,7 +7,6 @@
 
 import CoreLocation
 
-
 extension LocationManager {
     
     /// Delegate class that implements `CLLocationManagerDelegate` methods to receive location updates
@@ -65,13 +64,12 @@ extension LocationManager {
         deinit {
             finish()
             manager.delegate = nil
-#if DEBUG
-            print("deinit delegate")
-#endif
+            #if DEBUG
+                print("deinit delegate")
+            #endif
         }
         
         // MARK: - API
-        
         
         /// Start location streaming
         /// - Returns: Async stream of locations
@@ -107,13 +105,6 @@ extension LocationManager {
             enqueue(result: .success(locations))
         }
         
-        /// Called when the location manager's authorization status changes.
-        /// - Parameter manager: The location manager reporting the change.
-        /// Posts a notification with the new authorization status.
-        public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-            NotificationCenter.default.post(name: Permission.authorizationStatus, object: manager.authorizationStatus)
-        }
-        
         /// Called when the location manager fails to retrieve a location.
         /// - Parameters:
         ///   - manager: The location manager reporting the failure.
@@ -121,7 +112,14 @@ extension LocationManager {
         /// Forwards the error as a failure result to the async stream.
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             let cleError = error as? CLError ?? CLError(.locationUnknown)
-            continuation?.yield(.failure(cleError))
+            enqueue(result: .failure(cleError))
+        }
+        
+        /// Called when the location manager's authorization status changes.
+        /// - Parameter manager: The location manager reporting the change.
+        /// Posts a notification with the new authorization status.
+        public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+            NotificationCenter.default.post(name: Permission.authorizationStatus, object: manager.authorizationStatus)
         }
         
         // MARK: - Private
