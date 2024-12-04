@@ -1,5 +1,7 @@
 # Async/await location streamer for iOS, watchOS using new concurrency model in Swift
 
+### Please star the repository if you believe continuing the development of this package is worthwhile. This will help me understand which package deserves more effort.
+
 Async pattern using new concurrency model in **swift** that can be applied to Core Bluetooth, Core Motion and others sources streaming data asynchronously
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftuiux%2Fswift-async-corelocation-streamer%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/swiftuiux/swift-async-corelocation-streamer)
