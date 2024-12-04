@@ -8,21 +8,23 @@
 import CoreLocation
 
 
-extension LocationManagerAsync {
+extension LocationManager {
     
     /// Delegate class that implements `CLLocationManagerDelegate` methods to receive location updates
     /// and errors from `CLLocationManager`, and forwards them into an `AsyncStream` for asynchronous consumption.
     @available(iOS 14.0, watchOS 7.0, *)
     final class Delegate: NSObject, ILocationDelegate {
         
-        typealias DelegateContinuation = AsyncStream<LocationStreamer.Output>.Continuation
+        typealias DelegateOutput = LocationStreamer.Output
+        
+        typealias DelegateContinuation = AsyncStream<DelegateOutput>.Continuation
         
         /// The `CLLocationManager` instance used to obtain location updates.
         private let manager: CLLocationManager
         
         /// The continuation used to emit location updates or errors into the `AsyncStream`.
         /// When set, starts location updates and sets up termination handling.
-        public var continuation: DelegateContinuation? {
+        private var continuation: DelegateContinuation? {
             didSet {
                 continuation?.onTermination = { [weak self] termination in
                     self?.finish()
@@ -69,6 +71,16 @@ extension LocationManagerAsync {
         }
         
         // MARK: - API
+        
+        
+        /// Start location streaming
+        /// - Returns: Async stream of locations
+        public func start() -> AsyncStream<DelegateOutput>{
+            
+            let (stream, continuation) = AsyncStream<DelegateOutput>.makeStream(of: DelegateOutput.self)
+            self.continuation = continuation
+            return stream
+        }
         
         /// Stops location updates and finishes the `AsyncStream`.
         public func finish() {

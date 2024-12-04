@@ -9,7 +9,7 @@ import CoreLocation
 import Combine
 import SwiftUI
 
-extension LocationManagerAsync{
+extension LocationManager{
     
     /// Helper class to determine permission to get access for streaming ``CLLocation``
     @available(iOS 14.0, watchOS 7.0, *)

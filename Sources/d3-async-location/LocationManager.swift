@@ -10,7 +10,7 @@ import CoreLocation
 /// It requests permission in advance if it hasn't been determined yet.
 /// Use the `start()` method to begin streaming location updates.
 @available(iOS 14.0, watchOS 7.0, *)
-final class LocationManagerAsync: ILocationManagerAsync {
+final class LocationManager: ILocationManager {
    
     /// The delegate responsible for handling location updates and forwarding them to the async stream.
     private let delegate: ILocationDelegate
@@ -29,13 +29,13 @@ final class LocationManagerAsync: ILocationManagerAsync {
         _ distanceFilter: CLLocationDistance?,
         _ backgroundUpdates: Bool
     ) {
-        delegate = LocationManagerAsync.Delegate(accuracy, activityType, distanceFilter, backgroundUpdates)
+        delegate = LocationManager.Delegate(accuracy, activityType, distanceFilter, backgroundUpdates)
     }
     
     /// Initializes the `LocationManagerAsync` instance with a specified `CLLocationManager` instance.
     /// - Parameter locationManager: A pre-configured `CLLocationManager` instance used to manage location updates.
     public init(locationManager: CLLocationManager) {
-        delegate = LocationManagerAsync.Delegate(locationManager: locationManager)
+        delegate = LocationManager.Delegate(locationManager: locationManager)
     }
     
     /// Deinitializes the `LocationManagerAsync` instance, performing any necessary cleanup.
@@ -53,12 +53,8 @@ final class LocationManagerAsync: ILocationManagerAsync {
     public func start() async throws -> AsyncStream<LocationStreamer.Output> {
         
         try await delegate.permission()
-            
-        typealias Output = LocationStreamer.Output
-        let (stream, continuation) = AsyncStream<Output>.makeStream(of: Output.self)
-        delegate.continuation = continuation
-        
-        return stream
+
+        return delegate.start()
     }
     
     /// Stops the location streaming process.

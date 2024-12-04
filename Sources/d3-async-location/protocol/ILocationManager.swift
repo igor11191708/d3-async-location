@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 @available(iOS 14.0, watchOS 7.0, *)
-protocol ILocationManagerAsync {
+protocol ILocationManager {
     
     /// Starts the async stream of location updates.
     /// - Returns: An `AsyncStream` of `Output` that emits location updates or errors.

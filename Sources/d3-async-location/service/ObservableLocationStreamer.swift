@@ -1,5 +1,5 @@
 //
-//  LocationStreamer.swift
+//  ObservableLocationStreamer.swift
 //
 //
 //  Created by Igor on 03.02.2023.
@@ -8,47 +8,37 @@
 import SwiftUI
 import CoreLocation
 
-/// A ViewModel for asynchronously streaming location updates.
-/// This class leverages `ObservableObject` to publish updates for SwiftUI Views.
-///
-/// Example usage in a View:
-/// ```
-/// @EnvironmentObject var model: LocationStreamer
-/// ```
-///
-/// To start streaming updates, call the `start()` method within an async environment.
-///
-/// - Available: iOS 14.0+, watchOS 7.0+
-@available(iOS 14.0, watchOS 7.0, *)
-public final class LocationStreamer: ILocationStreamer, ObservableObject {
+#if compiler(>=5.9) && canImport(Observation)
+
+/// ViewModel for asynchronously posting location updates.
+@available(iOS 17.0, watchOS 10.0, *)
+@Observable
+public final class ObservableLocationStreamer: ILocationStreamer{
     
     /// Represents the output of the location manager.
-    /// Each output is either:
-    /// - A list of results (`[CLLocation]` objects), or
-    /// - A `CLError` in case of failure.
+    /// Contains either a list of results (e.g., `CLLocation` objects) or a `CLError` in case of failure.
     public typealias Output = Result<[CLLocation], CLError>
     
     // MARK: - Public Properties
     
-    /// Defines the strategy for processing and publishing location updates.
-    /// Default strategy retains only the most recent update (`KeepLastStrategy`).
+    /// Strategy for publishing updates. Default value is `.keepLast`.
     public let strategy: LocationResultStrategy
     
-    /// A list of location results, published for subscribing Views.
-    /// This property is updated based on the chosen `strategy`.
-    @MainActor @Published public private(set) var results: [Output] = []
+    /// A list of results published for subscribed Views.
+    /// Results may include various types of data (e.g., `CLLocation` objects) depending on the implementation.
+    /// Use this publisher to feed Views with updates or create a proxy to manipulate the flow,
+    /// such as filtering, mapping, or dropping results.
+    @MainActor public private(set) var results: [Output] = []
     
-    /// Indicates the current streaming state of the ViewModel.
-    /// State transitions include `.idle`, `.streaming`, and `.error`.
-    @MainActor @Published public private(set) var state: LocationStreamingState = .idle
+    /// Current streaming state of the ViewModel.
+    @MainActor public private(set) var state: LocationStreamingState = .idle
             
     // MARK: - Private Properties
     
-    /// Handles the actual location updates asynchronously.
-    private let manager: LocationManagerAsync
+    /// The asynchronous locations manager responsible for streaming updates.
+    private let manager: LocationManager
     
-    /// Checks if the streaming process is idle.
-    /// A computed property for convenience.
+    /// Indicates whether the streaming process is idle.
     @MainActor
     public var isIdle: Bool {
         return state == .idle
@@ -146,3 +136,5 @@ public final class LocationStreamer: ILocationStreamer, ObservableObject {
         state = value
     }
 }
+
+#endif
