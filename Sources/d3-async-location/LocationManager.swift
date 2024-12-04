@@ -41,7 +41,7 @@ final class LocationManager: ILocationManager {
     /// Deinitializes the `LocationManagerAsync` instance, performing any necessary cleanup.
     deinit {
         #if DEBUG
-        print("deinit manager")
+            print("deinit manager")
         #endif
     }
     
@@ -62,7 +62,7 @@ final class LocationManager: ILocationManager {
         delegate.finish()
         
         #if DEBUG
-        print("stop updating")
+            print("stop updating")
         #endif
     }
 }

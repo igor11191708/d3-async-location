@@ -28,7 +28,6 @@ extension LocationManager {
                 continuation?.onTermination = { [weak self] termination in
                     self?.finish()
                 }
-                manager.startUpdatingLocation()
             }
         }
         
@@ -77,6 +76,9 @@ extension LocationManager {
             
             let (stream, continuation) = AsyncStream<DelegateOutput>.makeStream(of: DelegateOutput.self)
             self.continuation = continuation
+            
+            manager.startUpdatingLocation()
+            
             return stream
         }
         
