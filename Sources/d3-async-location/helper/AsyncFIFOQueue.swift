@@ -9,20 +9,25 @@ import Foundation
 
 /// A generic FIFO queue that provides an asynchronous stream of elements.
 /// The stream is initialized lazily and can be terminated and cleaned up.
-class AsyncFIFOQueue<Element> {
+final class AsyncFIFOQueue<Element: Sendable>: @unchecked Sendable {
+    
+    /// Type alias for the AsyncStream Continuation.
+    typealias Continuation = AsyncStream<Element>.Continuation
+    
+    /// Type alias for the termination handler closure.
+    typealias TerminationHandler = @Sendable (Continuation.Termination) -> Void
     
     /// The asynchronous stream that consumers can iterate over.
     private var stream: AsyncStream<Element>?
     
     /// The continuation used to produce values for the stream.
-    private var continuation: AsyncStream<Element>.Continuation?
+    private var continuation: Continuation?
     
     /// Initializes the stream and continuation.
     /// Should be called before starting to enqueue elements.
     /// - Parameter onTermination: An escaping closure to handle termination events.
     /// - Returns: The initialized `AsyncStream<Element>`.
-    func initializeStream(onTermination: @escaping (AsyncStream<Element>.Continuation.Termination) -> Void) -> AsyncStream<Element> {
-
+    func initializeQueue(onTermination: @escaping TerminationHandler) -> AsyncStream<Element> {
         if let existingStream = stream {
             return existingStream
         }
@@ -34,7 +39,6 @@ class AsyncFIFOQueue<Element> {
             self?.finish()
         }
         
-        // Store the stream and continuation.
         self.stream = newStream
         self.continuation = newContinuation
         
@@ -43,7 +47,7 @@ class AsyncFIFOQueue<Element> {
     
     /// Provides access to the asynchronous stream.
     /// - Returns: The initialized `AsyncStream<Element>` instance, or `nil` if not initialized.
-    func getStream() -> AsyncStream<Element>? {
+    func getQueue() -> AsyncStream<Element>? {
         return stream
     }
     
