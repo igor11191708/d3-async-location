@@ -65,5 +65,4 @@ final class LocationManager: ILocationManager {
         print("stop updating")
         #endif
     }
-
 }
