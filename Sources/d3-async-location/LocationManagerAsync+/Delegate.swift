@@ -10,26 +10,17 @@ import CoreLocation
 extension LocationManager {
     
     /// Delegate class that implements `CLLocationManagerDelegate` methods to receive location updates
-    /// and errors from `CLLocationManager`, and forwards them into an `AsyncStream` for asynchronous consumption.
+    /// and errors from `CLLocationManager`, and forwards them into an `AsyncFIFOQueue` for asynchronous consumption.
     @available(iOS 14.0, watchOS 7.0, *)
     final class Delegate: NSObject, ILocationDelegate {
         
         typealias DelegateOutput = LocationStreamer.Output
         
-        typealias DelegateContinuation = AsyncStream<DelegateOutput>.Continuation
-        
         /// The `CLLocationManager` instance used to obtain location updates.
         private let manager: CLLocationManager
         
-        /// The continuation used to emit location updates or errors into the `AsyncStream`.
-        /// When set, starts location updates and sets up termination handling.
-        private var continuation: DelegateContinuation? {
-            didSet {
-                continuation?.onTermination = { [weak self] termination in
-                    self?.finish()
-                }
-            }
-        }
+        /// The FIFO queue used to emit location updates or errors as an asynchronous stream.
+        private let fifoQueue: AsyncFIFOQueue<DelegateOutput>
         
         // MARK: - Lifecycle
         
@@ -45,7 +36,8 @@ extension LocationManager {
             _ distanceFilter: CLLocationDistance?,
             _ backgroundUpdates: Bool = false
         ) {
-            manager = CLLocationManager()
+            self.manager = CLLocationManager()
+            self.fifoQueue = AsyncFIFOQueue<DelegateOutput>()
             super.init()
             manager.delegate = self
             updateSettings(accuracy, activityType, distanceFilter, backgroundUpdates)
@@ -54,38 +46,38 @@ extension LocationManager {
         /// Initializes the delegate with a given `CLLocationManager` instance.
         /// - Parameter locationManager: The `CLLocationManager` instance to manage location updates.
         public init(locationManager: CLLocationManager) {
-            manager = locationManager
+            self.manager = locationManager
+            self.fifoQueue = AsyncFIFOQueue<DelegateOutput>()
             super.init()
             manager.delegate = self
         }
         
-        /// Deinitializer to clean up resources and stop location updates.
         deinit {
             finish()
             manager.delegate = nil
             #if DEBUG
-                print("deinit delegate")
+            print("deinit delegate")
             #endif
         }
         
         // MARK: - API
         
-        /// Start location streaming
-        /// - Returns: Async stream of locations
-        public func start() -> AsyncStream<DelegateOutput>{
-            
-            let (stream, continuation) = AsyncStream<DelegateOutput>.makeStream(of: DelegateOutput.self)
-            self.continuation = continuation
+        /// Starts location streaming.
+        /// - Returns: An async stream of location outputs.
+        public func start() -> AsyncStream<DelegateOutput> {
+            // Initialize the stream when needed.
+            let stream = fifoQueue.initializeStream { [weak self] termination in
+                // Handle termination.
+                self?.finish()
+            }
             
             manager.startUpdatingLocation()
-            
             return stream
         }
         
-        /// Stops location updates and finishes the `AsyncStream`.
+        /// Stops location updates and finishes the asynchronous FIFO queue.
         public func finish() {
-            continuation?.finish()
-            continuation = nil
+            fifoQueue.finish()
             manager.stopUpdatingLocation()
         }
         
@@ -96,42 +88,23 @@ extension LocationManager {
             try await permission.grant(for: manager)
         }
         
-        // MARK: - Delegate
+        // MARK: - Delegate Methods
         
-        /// Called when new location data is available.
-        /// - Parameters:
-        ///   - manager: The location manager providing the update.
-        ///   - locations: An array of new `CLLocation` objects.
-        /// Forwards the locations as a success result to the async stream.
         public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            enqueue(result: .success(locations))
+            fifoQueue.enqueue(.success(locations))
         }
         
-        /// Called when the location manager fails to retrieve a location.
-        /// - Parameters:
-        ///   - manager: The location manager reporting the failure.
-        ///   - error: The error that occurred.
-        /// Forwards the error as a failure result to the async stream.
-        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             let cleError = error as? CLError ?? CLError(.locationUnknown)
-            enqueue(result: .failure(cleError))
+            fifoQueue.enqueue(.failure(cleError))
         }
         
-        /// Called when the location manager's authorization status changes.
-        /// - Parameter manager: The location manager reporting the change.
-        /// Posts a notification with the new authorization status.
         public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
             NotificationCenter.default.post(name: Permission.authorizationStatus, object: manager.authorizationStatus)
         }
         
-        // MARK: - Private
+        // MARK: - Private Methods
         
-        /// Sets the location manager's properties.
-        /// - Parameters:
-        ///   - accuracy: The desired accuracy of the location data.
-        ///   - activityType: The type of user activity associated with the location updates.
-        ///   - distanceFilter: The minimum distance (in meters) the device must move before an update event is generated.
-        ///   - backgroundUpdates: A Boolean indicating whether the app should receive location updates when suspended.
         private func updateSettings(
             _ accuracy: CLLocationAccuracy?,
             _ activityType: CLActivityType?,
@@ -144,12 +117,6 @@ extension LocationManager {
             #if os(iOS) || os(watchOS)
             manager.allowsBackgroundLocationUpdates = backgroundUpdates
             #endif
-        }
-        
-        /// Passes a location result (success or failure) into the async stream.
-        /// - Parameter result: The result containing locations or an error.
-        private func enqueue(result: LocationStreamer.Output) {
-            continuation?.yield(result)
         }
     }
 }
