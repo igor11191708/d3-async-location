@@ -21,12 +21,12 @@ final class LocationManagerAsync: ILocationManagerAsync {
     /// - Parameters:
     ///   - accuracy: The desired accuracy of the location data.
     ///   - activityType: The type of user activity associated with the location updates.
-    ///   - distanceFilter: The minimum distance (in meters) that the device must move before an update event is generated.
+    ///   - distanceFilter: The minimum distance (in meters) that the device must move before an update event is generated. kCLDistanceFilterNone (equivalent to -1.0) means updates are sent regardless of the distance traveled. This is a safe default for apps that don’t require filtering updates based on distance.
     ///   - backgroundUpdates: A Boolean value indicating whether the app should receive location updates when suspended.
     init(
         _ accuracy: CLLocationAccuracy? = kCLLocationAccuracyBest,
         _ activityType: CLActivityType? = .other,
-        _ distanceFilter: CLLocationDistance?,
+        _ distanceFilter: CLLocationDistance? = kCLDistanceFilterNone,
         _ backgroundUpdates: Bool = false
     ) {
         delegate = LocationManagerAsync.Delegate(accuracy, activityType, distanceFilter, backgroundUpdates)
