@@ -17,11 +17,6 @@ class AsyncFIFOQueue<Element> {
     /// The continuation used to produce values for the stream.
     private var continuation: AsyncStream<Element>.Continuation?
     
-    /// Initializes the FIFO queue without creating the stream immediately.
-    init() {
-        // Stream and continuation are initialized lazily.
-    }
-    
     /// Initializes the stream and continuation.
     /// Should be called before starting to enqueue elements.
     /// - Parameter onTermination: An escaping closure to handle termination events.
