@@ -24,8 +24,8 @@ final class LocationManagerAsync: ILocationManagerAsync {
     ///   - distanceFilter: The minimum distance (in meters) that the device must move before an update event is generated.
     ///   - backgroundUpdates: A Boolean value indicating whether the app should receive location updates when suspended.
     init(
-        _ accuracy: CLLocationAccuracy?,
-        _ activityType: CLActivityType?,
+        _ accuracy: CLLocationAccuracy? = kCLLocationAccuracyBest,
+        _ activityType: CLActivityType? = .other,
         _ distanceFilter: CLLocationDistance?,
         _ backgroundUpdates: Bool = false
     ) {
