@@ -46,19 +46,19 @@ public final class ObservableLocationStreamer: ILocationManagerViewModel{
        
     // MARK: - Lifecycle
 
-    /// Initializes the `LocationStreamer`.
+    /// Initializes the `ObservableLocationStreamer`.
     /// - Parameters:
     ///   - strategy: Strategy for publishing updates. Default value is `.keepLast`.
     ///   - accuracy: The accuracy of geographical coordinates.
     ///   - activityType: The type of activity associated with location updates.
-    ///   - distanceFilter: The minimum distance (in meters) to trigger location updates.
+    ///   - distanceFilter: The minimum distance (in meters) that the device must move before an update event is generated. kCLDistanceFilterNone (equivalent to -1.0) means updates are sent regardless of the distance traveled. This is a safe default for apps that don’t require filtering updates based on distance.
     ///   - backgroundUpdates: Indicates whether the app receives location updates when running in the background.
     public init(
         strategy: LocationStreamer.Strategy = .keepLast,
-        accuracy: CLLocationAccuracy? = kCLLocationAccuracyBest,
-        activityType: CLActivityType? = nil,
-        distanceFilter: CLLocationDistance? = nil,
-        backgroundUpdates: Bool = false
+        _ accuracy: CLLocationAccuracy? = kCLLocationAccuracyBest,
+        _ activityType: CLActivityType? = .other,
+        _ distanceFilter: CLLocationDistance? = kCLDistanceFilterNone,
+        _ backgroundUpdates: Bool = false
     ) {
         self.strategy = strategy
         manager = .init(accuracy, activityType, distanceFilter, backgroundUpdates)
