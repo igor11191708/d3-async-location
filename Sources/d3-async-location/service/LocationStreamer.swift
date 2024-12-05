@@ -110,6 +110,8 @@ public final class LocationStreamer: ILocationStreamer, ObservableObject {
         for await result in stream {
             add(result)
         }
+        
+        stop()
         setState(.idle)
     }
     

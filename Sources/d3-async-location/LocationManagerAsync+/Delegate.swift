@@ -66,10 +66,7 @@ extension LocationManager {
         /// - Returns: An async stream of location outputs.
         public func start() -> AsyncStream<DelegateOutput> {
             // Initialize the stream when needed.
-            let stream = fifoQueue.initializeQueue { [weak self] termination in
-                // Handle termination.
-                self?.finish()
-            }
+            let stream = fifoQueue.initializeQueue()
             
             manager.startUpdatingLocation()
             return stream

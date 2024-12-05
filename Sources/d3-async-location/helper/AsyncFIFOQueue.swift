@@ -17,8 +17,6 @@ extension LocationManager {
         /// Type alias for the AsyncStream Continuation.
         typealias Continuation = AsyncStream<Element>.Continuation
         
-        /// Type alias for the termination handler closure.
-        typealias TerminationHandler = (Continuation.Termination) -> Void
         
         /// The asynchronous stream that consumers can iterate over.
         private var stream: AsyncStream<Element>?
@@ -30,7 +28,7 @@ extension LocationManager {
         /// Should be called before starting to enqueue elements.
         /// - Parameter onTermination: An escaping closure to handle termination events.
         /// - Returns: The initialized `AsyncStream<Element>`.
-        func initializeQueue(onTermination: @escaping TerminationHandler) -> AsyncStream<Element> {
+        func initializeQueue() -> AsyncStream<Element> {
             // Return the existing stream if it's already initialized.
             if let existingStream = stream {
                 return existingStream
@@ -39,7 +37,6 @@ extension LocationManager {
             let (newStream, newContinuation) = AsyncStream<Element>.makeStream(of: Element.self)
             
             newContinuation.onTermination = { [weak self] termination in
-                onTermination(termination)
                 self?.finish()
             }
             
