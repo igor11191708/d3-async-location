@@ -12,13 +12,13 @@ extension LocationManager {
     /// A generic FIFO queue that provides an asynchronous stream of elements.
     /// The stream is initialized lazily and can be terminated and cleaned up.
     @available(iOS 14.0, watchOS 7.0, *)
-    final class AsyncFIFOQueue<Element: Sendable>: @unchecked Sendable {
+    final class AsyncFIFOQueue<Element: Sendable>{
         
         /// Type alias for the AsyncStream Continuation.
         typealias Continuation = AsyncStream<Element>.Continuation
         
         /// Type alias for the termination handler closure.
-        typealias TerminationHandler = @Sendable (Continuation.Termination) -> Void
+        typealias TerminationHandler = (Continuation.Termination) -> Void
         
         /// The asynchronous stream that consumers can iterate over.
         private var stream: AsyncStream<Element>?
