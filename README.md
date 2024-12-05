@@ -2,10 +2,9 @@
 
 ### Please star the repository if you believe continuing the development of this package is worthwhile. This will help me understand which package deserves more effort.
 
-This package uses Core Location under the hood to harness the power of GPS for accurate and efficient location tracking. By leveraging Swift’s async/await concurrency model, it provides a modern, clean, and scalable way to stream GPS data asynchronously. Core Location works with GPS, Wi-Fi, and cellular networks to determine a device’s position, ensuring both high accuracy and optimal performance.
-
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftuiux%2Fswift-async-corelocation-streamer%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/swiftuiux/swift-async-corelocation-streamer)
 
+This package uses Core Location under the hood to harness the power of GPS for accurate and efficient location tracking. By leveraging Swift’s async/await concurrency model, it provides a modern, clean, and scalable way to stream GPS data asynchronously. Core Location works with GPS, Wi-Fi, and cellular networks to determine a device’s position, ensuring both high accuracy and optimal performance.
 
 ## SwiftUI example
 [async-location-swift-example](https://github.com/swiftuiux/corelocation-manager-tracker-swift-apple-maps-example)
