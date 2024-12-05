@@ -10,7 +10,7 @@ This package uses Core Location under the hood to harness the power of GPS for a
 
  Available for watchOS
  
- ![simulate locations](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/image5.gif)
+ ![simulate locations](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/apple_watch_swiftui.gif)
 
 
 
