@@ -7,13 +7,14 @@ This package uses Core Location under the hood to harness the power of GPS for a
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fswiftuiux%2Fswift-async-corelocation-streamer%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/swiftuiux/swift-async-corelocation-streamer)
 
 
+## SwiftUI example
+[async-location-swift-example](https://github.com/swiftuiux/corelocation-manager-tracker-swift-apple-maps-example)
 
  Available for watchOS
  
  ![simulate locations](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/image5.gif)
 
-## SwiftUI example of using package
-[async-location-swift-example](https://github.com/swiftuiux/corelocation-manager-tracker-swift-apple-maps-example)
+
 
 if you are using the simulator don't forget to simulate locations
 
