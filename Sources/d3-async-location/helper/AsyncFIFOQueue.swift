@@ -65,5 +65,11 @@ extension LocationManager {
             continuation = nil
             stream = nil
         }
+        
+        deinit {
+            #if DEBUG
+            print("deinit async queue")
+            #endif
+        }
     }
 }
