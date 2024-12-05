@@ -6,6 +6,10 @@ This package uses Core Location under the hood to harness the power of GPS for a
 
 ### Please star the repository if you believe continuing the development of this package is worthwhile. This will help me understand which package deserves more effort.
 
+ Available for watchOS
+ 
+ ![simulate locations](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/image5.gif)
+
 ## SwiftUI example of using package
 [async-location-swift-example](https://github.com/swiftuiux/corelocation-manager-tracker-swift-apple-maps-example)
 
@@ -73,9 +77,6 @@ or
 
  ![Default location](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/image6.png)
  
- Available for watchOS
- 
- ![simulate locations](https://github.com/swiftuiux/swift-async-corelocation-streamer/blob/main/img/image5.gif)
  
 ## Documentation(API)
 - You need to have Xcode 13 installed in order to have access to Documentation Compiler (DocC)
