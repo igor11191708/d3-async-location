@@ -22,7 +22,7 @@ public final class ObservableLocationStreamer: ILocationStreamer{
     // MARK: - Public Properties
     
     /// Strategy for publishing updates. Default value is `.keepLast`.
-    public let strategy: LocationResultStrategy
+    public let strategy: ILocationResultStrategy
     
     /// A list of results published for subscribed Views.
     /// Results may include various types of data (e.g., `CLLocation` objects) depending on the implementation.
@@ -54,7 +54,7 @@ public final class ObservableLocationStreamer: ILocationStreamer{
     ///   - distanceFilter: The minimum distance (in meters) before generating an update. Defaults to `kCLDistanceFilterNone` (no filtering).
     ///   - backgroundUpdates: Whether the app should continue receiving location updates in the background. Defaults to `false`.
     public init(
-        strategy: LocationResultStrategy = KeepLastStrategy(),
+        strategy: ILocationResultStrategy = KeepLastStrategy(),
         _ accuracy: CLLocationAccuracy? = kCLLocationAccuracyBest,
         _ activityType: CLActivityType? = .other,
         _ distanceFilter: CLLocationDistance? = kCLDistanceFilterNone,
@@ -69,7 +69,7 @@ public final class ObservableLocationStreamer: ILocationStreamer{
     ///   - strategy: A `LocationResultStrategy` for managing location results. Defaults to `KeepLastStrategy`.
     ///   - locationManager: A pre-configured `CLLocationManager` instance.
     public init(
-        strategy: LocationResultStrategy = KeepLastStrategy(),
+        strategy: ILocationResultStrategy = KeepLastStrategy(),
         locationManager: CLLocationManager
     ) {
         self.strategy = strategy

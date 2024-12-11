@@ -1,5 +1,5 @@
 //
-//  LocationResultStrategy.swift
+//  Strategies.swift
 //
 //
 //  Created by Igor Shelopaev on 10.02.2023.
@@ -7,29 +7,12 @@
 
 import Foundation
 
-/// A protocol that defines a strategy for processing location results.
-/// Implementations of this protocol determine how new location results are handled
-/// (e.g., whether they replace the previous results or are appended).
-@available(iOS 14.0, watchOS 7.0, *)
-public protocol LocationResultStrategy {
-    
-    /// The type of output that the strategy processes.
-    /// `Output` is defined as `LocationStreamer.Output`, which is a `Result` containing
-    /// an array of `CLLocation` objects or a `CLError`.
-    typealias Output = LocationStreamer.Output
-    
-    /// Processes the results array by incorporating a new location result.
-    /// - Parameters:
-    ///   - results: The current array of processed results.
-    ///   - newResult: The new result to be processed and added.
-    /// - Returns: A new array of results after applying the strategy.
-    func process(results: [Output], newResult: Output) -> [Output]
-}
+
 
 /// A concrete strategy that keeps only the last location result.
 /// This strategy ensures that only the most recent location update is retained.
 @available(iOS 14.0, watchOS 7.0, *)
-public struct KeepLastStrategy: LocationResultStrategy {
+public struct KeepLastStrategy: ILocationResultStrategy {
     
     /// Initializes a new instance of `KeepLastStrategy`.
     public init() {}
@@ -47,7 +30,7 @@ public struct KeepLastStrategy: LocationResultStrategy {
 /// A concrete strategy that keeps all location results.
 /// This strategy appends each new location result to the existing array.
 @available(iOS 14.0, watchOS 7.0, *)
-public struct KeepAllStrategy: LocationResultStrategy {
+public struct KeepAllStrategy: ILocationResultStrategy {
     
     /// Initializes a new instance of `KeepAllStrategy`.
     public init() {}

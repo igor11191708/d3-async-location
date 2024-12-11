@@ -16,7 +16,7 @@ public protocol ILocationStreamer{
     var results : [LocationStreamer.Output] { get }
     
     /// Strategy for publishing locations Default value is .keepLast
-    var strategy : LocationResultStrategy { get }
+    var strategy : ILocationResultStrategy { get }
     
     /// Start streaming locations
     func start(clean: Bool) async throws
