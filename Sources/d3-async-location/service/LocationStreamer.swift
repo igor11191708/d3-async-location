@@ -2,7 +2,7 @@
 //  LocationStreamer.swift
 //
 //
-//  Created by Igor on 03.02.2023.
+//  Created by Igor Shelopaev on 03.02.2023.
 //
 
 import SwiftUI
@@ -99,7 +99,8 @@ public final class LocationStreamer: ILocationStreamer, ObservableObject {
     /// - Parameters:
     ///   - clean: Whether to clear previous results before starting. Defaults to `true`.
     /// - Throws: `AsyncLocationErrors.streamingProcessHasAlreadyStarted` if streaming is already active.
-    @MainActor public func start(clean: Bool = true) async throws {
+    @MainActor
+    public func start(clean: Bool = true) async throws {
         if state == .streaming { stop() }
         if clean { self.clean() }
         
@@ -116,7 +117,8 @@ public final class LocationStreamer: ILocationStreamer, ObservableObject {
     }
     
     /// Stops the location streaming process and sets the state to idle.
-    @MainActor public func stop() {
+    @MainActor
+    public func stop() {
         manager.stop()
         setState(.idle)
         
